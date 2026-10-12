@@ -1,6 +1,8 @@
-﻿target/
+target/
+build/
 *.class
 .idea/
 *.iml
 out/
 config.local.properties
+*.docx.p1.docx

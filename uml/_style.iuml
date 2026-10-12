@@ -1,0 +1,8 @@
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName "Liberation Serif"
+skinparam defaultFontSize 15
+skinparam dpi 150
+skinparam ArrowColor black
+skinparam backgroundColor white
+skinparam packageStyle rectangle

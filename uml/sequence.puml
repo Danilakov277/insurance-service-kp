@@ -1,0 +1,38 @@
+@startuml
+!include _style.iuml
+skinparam sequenceMessageAlign left
+actor "Агент" as A
+participant "Клиентское\nприложение\n(Swing)" as UI
+participant "ClientHandler\n(поток сервера)" as H
+participant "PolicyService" as PS
+participant "PremiumCalculator" as PC
+participant "PolicyDao /\nPaymentDao" as D
+database "PostgreSQL" as DB
+A -> UI : выбрать заявку и\nнажать «Оформить полис»
+UI -> H : Request(ISSUE_POLICY,\napplicationId, startDate)
+activate H
+H -> H : проверить сессию и роль
+H -> PS : issuePolicy(applicationId, agent, startDate)
+activate PS
+PS -> D : загрузить заявку, клиента,\nвид страхования
+D -> DB : SELECT ...
+DB --> D : данные
+alt заявка не в статусе «На рассмотрении»
+  PS --> H : BusinessRuleException
+  H --> UI : Response(ERROR, сообщение)
+else
+PS -> PC : calculate(type, sum, term,\nclient, franchise)
+  activate PC
+  PC -> D : число выплат клиента за 2 года
+  D -> DB : SELECT count(*) ...
+  PC --> PS : премия
+  deactivate PC
+  PS -> D : транзакция: INSERT policies,\nINSERT payments (график),\nUPDATE applications
+  D -> DB : BEGIN ... COMMIT
+  PS --> H : Policy
+  deactivate PS
+  H --> UI : Response(OK, Policy)
+end
+deactivate H
+UI --> A : номер полиса, премия,\nграфик взносов
+@enduml

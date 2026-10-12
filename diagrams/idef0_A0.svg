@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="1120" viewBox="0 0 1760 1120">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="11" markerHeight="11" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="#000"/></marker></defs>
+<rect x="1" y="1" width="1758" height="1058" fill="#fff" stroke="#000" stroke-width="1.5"/>
+<polyline points="2.0,192.0 130.0,192.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="14.0" y="159.0" font-size="17" text-anchor="start" font-weight="normal">Обращение</text><text x="14.0" y="179.0" font-size="17" text-anchor="start" font-weight="normal">клиента</text>
+<polyline points="2.0,559.3 770.0,559.3" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="14.0" y="549.3" font-size="17" text-anchor="start" font-weight="normal">Страховые взносы</text>
+<polyline points="2.0,716.9 1090.0,716.9" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="14.0" y="706.9" font-size="17" text-anchor="start" font-weight="normal">Заявление о страховом случае</text>
+<polyline points="240.0,2.0 240.0,130.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="248.0" y="26.0" font-size="17" text-anchor="start" font-weight="normal">Правила страхования и тарифы компании</text>
+<polyline points="240.0,100.0 1138.4,100.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="516.0,100.0 516.0,300.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="836.0,100.0 836.0,470.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1138.4,100.0 1138.4,640.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1520.0,2.0 1520.0,810.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="973.0" y="22.0" font-size="17" text-anchor="start" font-weight="normal">Законодательство Республики Беларусь</text><text x="973.0" y="42.0" font-size="17" text-anchor="start" font-weight="normal">о страховании</text>
+<polyline points="1233.0,58.0 1520.0,58.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="1233.0,58.0 1233.0,640.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="350.0,192.0 400.0,192.0 400.0,349.6 450.0,349.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="358.0" y="159.0" font-size="17" text-anchor="start" font-weight="normal">Расчёт</text><text x="358.0" y="179.0" font-size="17" text-anchor="start" font-weight="normal">стоимости</text>
+<polyline points="670.0,334.7 1758.0,334.7" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="680.0" y="324.7" font-size="17" text-anchor="start" font-weight="normal">Договор страхования (полис)</text>
+<polyline points="670.0,389.3 720.0,389.3 720.0,509.7 770.0,509.7" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="728.0" y="445.5" font-size="17" text-anchor="start" font-weight="normal">График</text><text x="728.0" y="465.5" font-size="17" text-anchor="start" font-weight="normal">взносов</text>
+<polyline points="990.0,504.7 1040.0,504.7 1040.0,674.7 1090.0,674.7" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1046.0" y="590.0" font-size="17" text-anchor="start" font-weight="normal">Статус</text><text x="1046.0" y="610.0" font-size="17" text-anchor="start" font-weight="normal">договора</text><text x="1046.0" y="630.0" font-size="17" text-anchor="start" font-weight="normal">и оплаты</text>
+<polyline points="990.0,563.0 1352.0,563.0 1352.0,847.2 1410.0,847.2" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1360.0" y="758.0" font-size="17" text-anchor="start" font-weight="normal">Данные о договорах</text><text x="1360.0" y="778.0" font-size="17" text-anchor="start" font-weight="normal">и взносах</text>
+<polyline points="1310.0,677.2 1758.0,677.2" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1588.0" y="644.2" font-size="17" text-anchor="start" font-weight="normal">Страховая выплата</text><text x="1588.0" y="664.2" font-size="17" text-anchor="start" font-weight="normal">или отказ</text>
+<polyline points="1310.0,733.0 1330.0,733.0 1330.0,890.6 1410.0,890.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1190.0" y="916.6" font-size="17" text-anchor="start" font-weight="normal">Сведения</text><text x="1190.0" y="936.6" font-size="17" text-anchor="start" font-weight="normal">о выплатах</text>
+<polyline points="1630.0,872.0 1758.0,872.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1640.0" y="839.0" font-size="17" text-anchor="start" font-weight="normal">Отчётность</text><text x="1640.0" y="859.0" font-size="17" text-anchor="start" font-weight="normal">и аналитика</text>
+<polyline points="174.0,1060.0 174.0,254.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="182.0" y="1048.0" font-size="17" text-anchor="start" font-weight="normal">Страховые агенты</text>
+<polyline points="174.0,990.0 1134.0,990.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="494.0,990.0 494.0,424.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="814.0,990.0 814.0,594.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1134.0,990.0 1134.0,764.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1520.0,1060.0 1520.0,934.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1512.0" y="1048.0" font-size="17" text-anchor="end" font-weight="normal">ПС «Страховой сервис»</text>
+<polyline points="295.0,1018.0 1520.0,1018.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="295.0,1018.0 295.0,254.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="615.0,1018.0 615.0,424.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="935.0,1018.0 935.0,594.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1255.0,1018.0 1255.0,764.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="1597.0,1060.0 1597.0,934.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1605.0" y="1020.0" font-size="17" text-anchor="start" font-weight="normal">Администратор</text>
+<circle cx="516.0" cy="100" r="3" fill="#000"/>
+<circle cx="836.0" cy="100" r="3" fill="#000"/>
+<circle cx="240.0" cy="100" r="3" fill="#000"/>
+<circle cx="1520.0" cy="58" r="3" fill="#000"/>
+<circle cx="494.0" cy="990" r="3" fill="#000"/>
+<circle cx="814.0" cy="990" r="3" fill="#000"/>
+<circle cx="174.0" cy="990" r="3" fill="#000"/>
+<circle cx="615.0" cy="1018" r="3" fill="#000"/>
+<circle cx="935.0" cy="1018" r="3" fill="#000"/>
+<circle cx="1255.0" cy="1018" r="3" fill="#000"/>
+<circle cx="1520.0" cy="1018" r="3" fill="#000"/>
+<rect x="130" y="130" width="220" height="124" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="240.0" y="165.7" font-size="19" text-anchor="middle" font-weight="normal">Консультировать</text><text x="240.0" y="187.7" font-size="19" text-anchor="middle" font-weight="normal">и рассчитать</text><text x="240.0" y="209.7" font-size="19" text-anchor="middle" font-weight="normal">стоимость</text><text x="240.0" y="231.7" font-size="19" text-anchor="middle" font-weight="normal">страхования</text>
+<text x="344.0" y="248.0" font-size="17" text-anchor="end" font-weight="bold">A1</text>
+<rect x="450" y="300" width="220" height="124" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="560.0" y="346.6" font-size="19" text-anchor="middle" font-weight="normal">Заключить</text><text x="560.0" y="368.6" font-size="19" text-anchor="middle" font-weight="normal">договор</text><text x="560.0" y="390.6" font-size="19" text-anchor="middle" font-weight="normal">страхования</text>
+<text x="664.0" y="418.0" font-size="17" text-anchor="end" font-weight="bold">A2</text>
+<rect x="770" y="470" width="220" height="124" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="880.0" y="516.6" font-size="19" text-anchor="middle" font-weight="normal">Сопровождать</text><text x="880.0" y="538.6" font-size="19" text-anchor="middle" font-weight="normal">договор</text><text x="880.0" y="560.6" font-size="19" text-anchor="middle" font-weight="normal">страхования</text>
+<text x="984.0" y="588.0" font-size="17" text-anchor="end" font-weight="bold">A3</text>
+<rect x="1090" y="640" width="220" height="124" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="1200.0" y="686.6" font-size="19" text-anchor="middle" font-weight="normal">Урегулировать</text><text x="1200.0" y="708.6" font-size="19" text-anchor="middle" font-weight="normal">страховой</text><text x="1200.0" y="730.6" font-size="19" text-anchor="middle" font-weight="normal">случай</text>
+<text x="1304.0" y="758.0" font-size="17" text-anchor="end" font-weight="bold">A4</text>
+<rect x="1410" y="810" width="220" height="124" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="1520.0" y="845.6" font-size="19" text-anchor="middle" font-weight="normal">Формировать</text><text x="1520.0" y="867.6" font-size="19" text-anchor="middle" font-weight="normal">отчётность и</text><text x="1520.0" y="889.6" font-size="19" text-anchor="middle" font-weight="normal">анализировать</text><text x="1520.0" y="911.6" font-size="19" text-anchor="middle" font-weight="normal">убыточность</text>
+<text x="1624.0" y="928.0" font-size="17" text-anchor="end" font-weight="bold">A5</text>
+<rect x="1" y="1060" width="1758" height="58" fill="#fff" stroke="#000" stroke-width="1.5"/>
+<line x1="230" y1="1060" x2="230" y2="1119" stroke="#000" stroke-width="1.5"/>
+<line x1="1530" y1="1060" x2="1530" y2="1119" stroke="#000" stroke-width="1.5"/>
+<text x="10.0" y="1078.0" font-size="13" text-anchor="start" font-weight="normal">УЗЕЛ:</text>
+<text x="115.0" y="1104.0" font-size="22" text-anchor="middle" font-weight="bold">A0</text>
+<text x="240.0" y="1078.0" font-size="13" text-anchor="start" font-weight="normal">НАЗВАНИЕ:</text>
+<text x="880.0" y="1104.0" font-size="22" text-anchor="middle" font-weight="bold">Оказывать страховые услуги населению</text>
+<text x="1540.0" y="1078.0" font-size="13" text-anchor="start" font-weight="normal">НОМЕР:</text>
+<text x="1645.0" y="1104.0" font-size="22" text-anchor="middle" font-weight="bold">2</text>
+</svg>

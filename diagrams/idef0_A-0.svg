@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="960" viewBox="0 0 1500 960">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="11" markerHeight="11" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="#000"/></marker></defs>
+<rect x="1" y="1" width="1498" height="898" fill="#fff" stroke="#000" stroke-width="1.5"/>
+<polyline points="2.0,350.6 520.0,350.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="20.0" y="294.6" font-size="17" text-anchor="start" font-weight="normal">Обращение клиента</text><text x="20.0" y="314.6" font-size="17" text-anchor="start" font-weight="normal">(данные страхователя</text><text x="20.0" y="334.6" font-size="17" text-anchor="start" font-weight="normal">и объекта страхования)</text>
+<polyline points="2.0,426.5 520.0,426.5" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="20.0" y="416.5" font-size="17" text-anchor="start" font-weight="normal">Страховые взносы</text>
+<polyline points="2.0,488.6 520.0,488.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="20.0" y="455.6" font-size="17" text-anchor="start" font-weight="normal">Заявление о страховом</text><text x="20.0" y="475.6" font-size="17" text-anchor="start" font-weight="normal">случае</text>
+<polyline points="635.0,2.0 635.0,300.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="643.0" y="60.0" font-size="17" text-anchor="start" font-weight="normal">Законодательство Республики</text><text x="643.0" y="80.0" font-size="17" text-anchor="start" font-weight="normal">Беларусь о страховании</text>
+<polyline points="865.0,2.0 865.0,300.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="873.0" y="60.0" font-size="17" text-anchor="start" font-weight="normal">Правила страхования</text><text x="873.0" y="80.0" font-size="17" text-anchor="start" font-weight="normal">и тарифы компании</text>
+<polyline points="980.0,350.6 1498.0,350.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1010.0" y="317.6" font-size="17" text-anchor="start" font-weight="normal">Договор страхования</text><text x="1010.0" y="337.6" font-size="17" text-anchor="start" font-weight="normal">(полис)</text>
+<polyline points="980.0,426.5 1498.0,426.5" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1010.0" y="393.5" font-size="17" text-anchor="start" font-weight="normal">Страховая выплата или</text><text x="1010.0" y="413.5" font-size="17" text-anchor="start" font-weight="normal">мотивированный отказ</text>
+<polyline points="980.0,488.6 1498.0,488.6" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1010.0" y="455.6" font-size="17" text-anchor="start" font-weight="normal">Отчётность и анализ</text><text x="1010.0" y="475.6" font-size="17" text-anchor="start" font-weight="normal">убыточности</text>
+<polyline points="602.8,898.0 602.8,530.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="610.8" y="860.0" font-size="17" text-anchor="start" font-weight="normal">Страховые агенты</text>
+<polyline points="750.0,898.0 750.0,530.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="758.0" y="860.0" font-size="17" text-anchor="start" font-weight="normal">Администратор</text>
+<polyline points="897.2,898.0 897.2,530.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="905.2" y="860.0" font-size="17" text-anchor="start" font-weight="normal">ПС «Страховой сервис»</text>
+<rect x="520" y="300" width="460" height="230" fill="#fff" stroke="#000" stroke-width="2"/>
+<text x="750.0" y="410.6" font-size="19" text-anchor="middle" font-weight="normal">Оказывать страховые</text><text x="750.0" y="432.6" font-size="19" text-anchor="middle" font-weight="normal">услуги населению</text>
+<text x="974.0" y="524.0" font-size="17" text-anchor="end" font-weight="bold">A0</text>
+<rect x="1" y="900" width="1498" height="58" fill="#fff" stroke="#000" stroke-width="1.5"/>
+<line x1="230" y1="900" x2="230" y2="959" stroke="#000" stroke-width="1.5"/>
+<line x1="1270" y1="900" x2="1270" y2="959" stroke="#000" stroke-width="1.5"/>
+<text x="10.0" y="918.0" font-size="13" text-anchor="start" font-weight="normal">УЗЕЛ:</text>
+<text x="115.0" y="944.0" font-size="22" text-anchor="middle" font-weight="bold">A-0</text>
+<text x="240.0" y="918.0" font-size="13" text-anchor="start" font-weight="normal">НАЗВАНИЕ:</text>
+<text x="750.0" y="944.0" font-size="22" text-anchor="middle" font-weight="bold">Оказывать страховые услуги населению</text>
+<text x="1280.0" y="918.0" font-size="13" text-anchor="start" font-weight="normal">НОМЕР:</text>
+<text x="1385.0" y="944.0" font-size="22" text-anchor="middle" font-weight="bold">1</text>
+<text x="20.0" y="30.0" font-size="15" text-anchor="start" font-weight="normal">Цель моделирования: описать процесс оказания страховых</text><text x="20.0" y="48.0" font-size="15" text-anchor="start" font-weight="normal">услуг физическим лицам для определения функций,</text><text x="20.0" y="66.0" font-size="15" text-anchor="start" font-weight="normal">автоматизируемых программным средством.</text><text x="20.0" y="84.0" font-size="15" text-anchor="start" font-weight="normal">Точка зрения: руководитель страховой компании.</text></svg>

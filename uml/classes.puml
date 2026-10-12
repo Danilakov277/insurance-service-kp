@@ -1,0 +1,132 @@
+@startuml
+!include _style.iuml
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 13
+hide circle
+package "common.model" {
+  abstract class Entity <<Serializable>> {
+    # id : long
+    + getId() : long
+    + setId(id : long) : void
+  }
+  abstract class Person {
+    - lastName : String
+    - firstName : String
+    - patronymic : String
+    + getFullName() : String
+    + getShortName() : String
+  }
+  class Client {
+    - birthDate : LocalDate
+    - passportNo : String
+    - phone : String
+    - address : String
+    + getAge(on : LocalDate) : int
+  }
+  class Agent {
+    - position : String
+    - hireDate : LocalDate
+    - commissionRate : BigDecimal
+  }
+  class User {
+    - login : String
+    - role : Role
+    - blocked : boolean
+  }
+  class InsuranceType {
+    - name : String
+    - baseRate : BigDecimal
+    - minSum : BigDecimal
+    - maxSum : BigDecimal
+    - maxTermMonths : int
+  }
+  class Application {
+    - client : Client
+    - type : InsuranceType
+    - requestedSum : BigDecimal
+    - termMonths : int
+    - franchisePercent : int
+    - installments : int
+    - status : ApplicationStatus
+  }
+  class Policy {
+    - policyNumber : String
+    - client : Client
+    - agent : Agent
+    - type : InsuranceType
+    - insuredSum : BigDecimal
+    - premium : BigDecimal
+    - franchise : BigDecimal
+    - startDate : LocalDate
+    - endDate : LocalDate
+    - status : PolicyStatus
+    + isActiveOn(d : LocalDate) : boolean
+  }
+  class Payment {
+    - installmentNo : int
+    - amount : BigDecimal
+    - dueDate : LocalDate
+    - paidDate : LocalDate
+    + isOverdue(on : LocalDate) : boolean
+  }
+  class Claim {
+    - policy : Policy
+    - incidentDate : LocalDate
+    - damageAmount : BigDecimal
+    - payoutAmount : BigDecimal
+    - status : ClaimStatus
+  }
+  enum Role {
+    CLIENT
+    AGENT
+    ADMIN
+  }
+}
+Entity <|-- Person
+Person <|-- Client
+Person <|-- Agent
+Entity <|-- User
+Entity <|-- InsuranceType
+Entity <|-- Application
+Entity <|-- Policy
+Entity <|-- Payment
+Entity <|-- Claim
+Policy "1" *-- "1..*" Payment
+Policy "1" o-- "0..*" Claim
+Client "1" -- "0..*" Policy
+Agent "1" -- "0..*" Policy
+InsuranceType "1" -- "0..*" Policy
+Client "1" -- "0..*" Application
+User --> Role
+
+package "server.logic" {
+  interface PremiumStrategy {
+    + typeFactor(app : Application) : BigDecimal
+  }
+  abstract class AbstractPremiumStrategy {
+    + typeFactor(app : Application) : BigDecimal
+    # extraFactor(app : Application) : BigDecimal
+  }
+  class PropertyPremiumStrategy
+  class CascoPremiumStrategy
+  class AccidentPremiumStrategy
+  class TravelPremiumStrategy
+  class PremiumStrategyFactory <<Factory>> {
+    + {static} forType(t : InsuranceType) : PremiumStrategy
+  }
+  class PremiumCalculator {
+    + calculate(app : Application, claimsCount : int) : BigDecimal
+    + calculate(t : InsuranceType, sum : BigDecimal, term : int, age : int) : BigDecimal
+  }
+  class PayoutCalculator {
+    + calculate(p : Policy, c : Claim, paidBefore : BigDecimal) : PayoutDecision
+  }
+}
+PremiumStrategy <|.. AbstractPremiumStrategy
+AbstractPremiumStrategy <|-- PropertyPremiumStrategy
+AbstractPremiumStrategy <|-- CascoPremiumStrategy
+AbstractPremiumStrategy <|-- AccidentPremiumStrategy
+AbstractPremiumStrategy <|-- TravelPremiumStrategy
+PremiumStrategyFactory ..> PremiumStrategy : создаёт
+PremiumCalculator --> PremiumStrategyFactory
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+!include _style.iuml
+actor "Гость" as G
+actor "Клиент" as C
+actor "Пользователь" as U
+rectangle "ПС «Страховой сервис»" {
+  usecase "Регистрация\nклиента" as UC1
+  usecase "Авторизация" as UC2
+  usecase "Расчёт стоимости\nстрахования" as UC3
+  usecase "Подача заявки\nна страхование" as UC4
+  usecase "Внесение\nстрахового взноса" as UC6
+  usecase "Подача заявления\nо страховом случае" as UC7
+  usecase "Просмотр договоров,\nвзносов и выплат" as UC12
+  usecase "Рассмотрение заявки\nи оформление полиса" as UC5
+  usecase "Формирование\nграфика взносов" as UCg
+  usecase "Урегулирование\nстрахового случая" as UC8
+  usecase "Расчёт страховой\nвыплаты" as UCp
+  usecase "Продление\nдоговора" as UC9
+  usecase "Досрочное расторжение\nс расчётом возврата" as UC10
+  usecase "Контроль просрочек\nи истекающих договоров" as UC11
+  usecase "Управление видами\nстрахования и тарифами" as UC13
+  usecase "Управление учётными\nзаписями агентов" as UC14
+  usecase "Отчёт о продажах\nагентов" as UC15
+  usecase "Анализ убыточности\nвидов страхования" as UC16
+  usecase "Выгрузка отчёта\nв файл" as UC17
+}
+actor "Агент" as A
+actor "Администратор" as AD
+G -- UC1
+U -- UC2
+C -- UC3
+C -- UC4
+C -- UC6
+C -- UC7
+C -- UC12
+UC3 -- A
+UC5 -- A
+UC8 -- A
+UC9 -- A
+UC10 -- A
+UC11 -- A
+UC13 -- AD
+UC14 -- AD
+UC15 -- AD
+UC16 -- AD
+UC5 .> UC3 : <<include>>
+UC5 .> UCg : <<include>>
+UC8 .> UCp : <<include>>
+UC17 .> UC15 : <<extend>>
+UC17 .> UC16 : <<extend>>
+C -|> U
+A -|> U
+AD -|> U
+@enduml

@@ -323,14 +323,16 @@
    "img": "/home/claude/kp/diagrams/bpmn_contract.png",
    "caption": "Рисунок 1.1 – Модель процесса заключения договора страхования в нотации BPMN 2.0",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/bpmn_contract.png"
   },
   {
    "t": "fig",
    "img": "/home/claude/kp/diagrams/bpmn_claim.png",
    "caption": "Рисунок 1.2 – Модель процесса урегулирования страхового случая в нотации BPMN 2.0",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/bpmn_claim.png"
   },
   {
    "t": "p",
@@ -385,7 +387,8 @@
    "img": "/home/claude/kp/diagrams/idef0_A0.png",
    "caption": "Рисунок 1.4 – Диаграмма декомпозиции A0",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/idef0_A0.png"
   },
   {
    "t": "p",
@@ -400,14 +403,16 @@
    "img": "/home/claude/kp/diagrams/idef0_A4.png",
    "caption": "Рисунок 1.5 – Диаграмма декомпозиции A4 «Урегулировать страховой случай»",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/idef0_A4.png"
   },
   {
    "t": "fig",
    "img": "/home/claude/kp/diagrams/idef0_A44.png",
    "caption": "Рисунок 1.6 – Диаграмма декомпозиции A44 «Рассчитать страховую выплату»",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/idef0_A44.png"
   },
   {
    "t": "p",
@@ -624,7 +629,8 @@
    "img": "/home/claude/kp/diagrams/idef1x.png",
    "caption": "Рисунок 1.7 – Информационная модель предметной области в нотации IDEF1X",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/idef1x.png"
   },
   {
    "t": "tbl",
@@ -1198,7 +1204,8 @@
    "img": "/home/claude/kp/diagrams/sequence.png",
    "caption": "Рисунок 1.10 – Диаграмма последовательности оформления полиса",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/sequence.png"
   },
   {
    "t": "p",
@@ -1213,7 +1220,8 @@
    "img": "/home/claude/kp/diagrams/classes_model.png",
    "caption": "Рисунок 1.11 – Диаграмма классов модели данных",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/classes_model.png"
   },
   {
    "t": "fig",
@@ -1440,7 +1448,8 @@
    "img": "/home/claude/kp/diagrams/architecture.png",
    "caption": "Рисунок 2.1 – Архитектура программного средства",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/architecture.png"
   },
   {
    "t": "tbl",
@@ -1824,7 +1833,8 @@
    "img": "/home/claude/kp/diagrams/classes_server.png",
    "caption": "Рисунок 2.2 – Диаграмма классов серверной части",
    "w": 25.7,
-   "landscape": true
+   "landscape": true,
+   "imgRot": "/home/claude/kp/docs/_rot/classes_server.png"
   },
   {
    "t": "fig",
@@ -2409,8 +2419,7 @@
    ],
    "align": [],
    "num": "2.10",
-   "title": "Сравнение СУБД",
-   "newPage": true
+   "title": "Сравнение СУБД"
   },
   {
    "t": "p",
@@ -3742,30 +3751,7 @@
      "UC2",
      "Авторизация",
      "2.7, 4.2, 4.25"
-    ]
-   ],
-   "align": [
-    "c",
-    "l",
-    "l"
-   ],
-   "num": "4.3",
-   "title": "Варианты использования в сквозном примере"
-  },
-  {
-   "t": "tbl",
-   "caption": "Продолжение таблицы 4.3",
-   "cols": [
-    1.6,
-    9.4,
-    5.5
-   ],
-   "header": [
-    "UC",
-    "Вариант использования",
-    "Рисунки"
-   ],
-   "rows": [
+    ],
     [
      "UC3",
      "Расчёт стоимости страхования",
@@ -3848,8 +3834,7 @@
     "l"
    ],
    "num": "4.3",
-   "title": "Варианты использования в сквозном примере",
-   "cont": true
+   "title": "Варианты использования в сквозном примере"
   },
   {
    "t": "h1",

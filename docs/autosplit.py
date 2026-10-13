@@ -148,7 +148,8 @@ def main():
             build(content)
             tables = probe(desktop, docx_path)
             blocks = [(i, b) for i, b in enumerate(content["body"]) if b["t"] == "tbl"]
-            body_tables = tables[len(tables) - len(blocks):]   # первые — таблицы титульного листа
+            # таблицы с пустой первой ячейкой — служебные (титульный лист, повёрнутые рисунки)
+            body_tables = [t for t in tables if t["head"].strip()]
             assert len(body_tables) == len(blocks), (len(tables), len(blocks))
             split = None
             for (idx, b), t in zip(blocks, body_tables):

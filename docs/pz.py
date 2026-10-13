@@ -74,8 +74,21 @@ def fig(img, title, w=None, landscape=False, key=None):
     if key:
         refs["fig"][key] = n
     path = img if img.startswith("/") else (S + img if img[:2].isdigit() else D + img)
-    B({"t": "fig", "img": path, "caption": f"Рисунок {n} – {title}", "w": w, "landscape": landscape})
+    block = {"t": "fig", "img": path, "caption": f"Рисунок {n} – {title}", "w": w, "landscape": landscape}
+    if landscape:
+        block["imgRot"] = _rotated(path)
+    B(block)
     return n
+
+
+def _rotated(path):
+    """Копия изображения, повёрнутая на 90° против часовой стрелки (верх рисунка — к корешку)."""
+    from PIL import Image
+    out = KP / "docs" / "_rot" / Path(path).name
+    out.parent.mkdir(exist_ok=True)
+    if not out.exists() or out.stat().st_mtime < Path(path).stat().st_mtime:
+        Image.open(path).rotate(90, expand=True).save(out)
+    return str(out)
 
 
 def tbl(title, cols, header, rows, align=None, key=None):

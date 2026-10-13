@@ -4,7 +4,7 @@ const fs = require("fs");
 const {
   Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, AlignmentType,
   PageNumber, Footer, TabStopType, BorderStyle, VerticalAlign, LineRuleType, PageBreak, SectionType,
-  TableLayoutType, PageOrientation,
+  TableLayoutType, PageOrientation, TextDirection, HeightRule,
 } = require("docx");
 
 const [, , contentPath, outPath] = process.argv;
@@ -73,11 +73,50 @@ function image(block, maxW, maxH) {
   let widthCm = Math.min(block.w || maxW, maxW);
   if (widthCm * h / w > maxH) widthCm = maxH * w / h;
   const pxW = Math.round(widthCm / 2.54 * 96), pxH = Math.round(pxW * h / w);
+  // СТП 01-2024, п. 2.5.3 и прил. Н: рисунок отделяется от текста и от подписи пробельной строкой
   return new Paragraph({
     alignment: AlignmentType.CENTER, keepNext: true,
-    spacing: { before: 240, after: 120, line: 240, lineRule: LineRuleType.AUTO },
+    spacing: { before: 360, after: 360, line: 240, lineRule: LineRuleType.AUTO },
     children: [new ImageRun({ data: buf, type: "png", transformation: { width: pxW, height: pxH } })],
   });
+}
+
+// Широкий рисунок на книжной странице, повёрнутый так, чтобы его читали с поворотом записки
+// на 90° по часовой стрелке (СТП 01-2024, п. 2.5.4). Изображение заранее повёрнуто (pz.py), подпись
+// стоит справа от него в ячейке с направлением текста снизу вверх. Высота строки почти равна
+// высоте поля страницы, поэтому рисунок всегда занимает отдельную страницу.
+const ROT_ROW_H = 25.0, ROT_CAP_W = 1.6, ROT_GAP = 0.7;
+function rotatedFigure(b) {
+  const buf = fs.readFileSync(b.imgRot);
+  const [w, h] = pngSize(buf);                       // размеры повёрнутого изображения
+  const maxW = 16.5 - ROT_CAP_W - ROT_GAP, maxH = ROT_ROW_H - 0.6;
+  let wCm = maxW, hCm = maxW * h / w;
+  if (hCm > maxH) { hCm = maxH; wCm = maxH * w / h; }
+  const pxW = Math.round(wCm / 2.54 * 96), pxH = Math.round(hCm / 2.54 * 96);
+  const none = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+  const nob = { top: none, bottom: none, left: none, right: none };
+  return [
+    new Table({
+      width: { size: CM(16.5), type: WidthType.DXA }, layout: TableLayoutType.FIXED,
+      columnWidths: [CM(16.5 - ROT_CAP_W), CM(ROT_CAP_W)],
+      borders: { ...nob, insideHorizontal: none, insideVertical: none },
+      rows: [new TableRow({ cantSplit: true, height: { value: CM(ROT_ROW_H), rule: HeightRule.EXACT },
+        children: [
+          new TableCell({ width: { size: CM(16.5 - ROT_CAP_W), type: WidthType.DXA }, borders: nob,
+            verticalAlign: VerticalAlign.CENTER, margins: { left: 0, right: CM(ROT_GAP), top: 0, bottom: 0 },
+            children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { line: 240, lineRule: LineRuleType.AUTO },
+              children: [new ImageRun({ data: buf, type: "png", transformation: { width: pxW, height: pxH } })] })] }),
+          new TableCell({ width: { size: CM(ROT_CAP_W), type: WidthType.DXA }, borders: nob,
+            verticalAlign: VerticalAlign.CENTER, textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
+            margins: { left: 0, right: 0, top: 0, bottom: 0 },
+            children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { ...LINE },
+              children: [new TextRun({ text: b.caption, font: FONT, size: PT(14) })] })] }),
+        ] })],
+    }),
+    // разделитель: две таблицы подряд Word склеил бы в одну
+    new Paragraph({ spacing: { before: 0, after: 0, line: 20, lineRule: LineRuleType.EXACT },
+      children: [new TextRun({ text: "", size: 2 })] }),
+  ];
 }
 
 function cellPara(text, bold, align) {
@@ -233,8 +272,9 @@ function body(blocks, geom, noFirstBreak) {
       case "li": out.push(P(`– ${b.text}`)); break;
       case "ol": out.push(P(`${b.n}) ${b.text}`)); break;
       case "fig":
+        if (b.imgRot) { out.push(...rotatedFigure(b)); break; }
         out.push(image(b, geom.maxW, geom.maxH));
-        out.push(P(b.caption, { align: AlignmentType.CENTER, indent: { firstLine: 0 }, after: 240, keepLines: true }));
+        out.push(P(b.caption, { align: AlignmentType.CENTER, indent: { firstLine: 0 }, after: 360, keepLines: true }));
         break;
       case "tbl":
         out.push(P(b.caption, { align: AlignmentType.LEFT, indent: { firstLine: 0 }, before: b.cont ? 0 : 240,
@@ -274,12 +314,9 @@ function body(blocks, geom, noFirstBreak) {
 // ---------------- разделы документа ----------------
 const portrait = { page: { size: { width: CM(21), height: CM(29.7) },
   margin: { left: CM(3), right: CM(1.5), top: CM(2), bottom: CM(2), footer: CM(1) } } };
-const landscape = { page: { size: { width: CM(21), height: CM(29.7), orientation: PageOrientation.LANDSCAPE },
-  margin: { top: CM(3), bottom: CM(1.5), left: CM(2), right: CM(2), footer: CM(0.7) } } };
 const fullPage = { page: { size: { width: CM(21), height: CM(29.7) },
   margin: { left: 0, right: 0, top: 0, bottom: 0, header: 0, footer: 0 } } };
 const PORTRAIT_GEOM = { maxW: 16.5, maxH: 22.5 };
-const LANDSCAPE_GEOM = { maxW: 25.7, maxH: 14.5 };
 
 const mkFooter = () => new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT,
   children: [new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: PT(14) })] })] });
@@ -312,11 +349,6 @@ function sections(blocks, withFooter, firstNoBreak) {
         out.push({ properties: { ...fullPage, type: SectionType.NEXT_PAGE }, footers: { default: emptyFooter() },
           children: [fullPageImage({ img })] });
       }
-      nextNoBreak = true;
-    } else if (b.t === "fig" && b.landscape) {
-      flush(nextNoBreak);
-      out.push({ properties: { ...landscape, type: SectionType.NEXT_PAGE },
-        footers: { default: withFooter ? mkFooter() : emptyFooter() }, children: body([b], LANDSCAPE_GEOM, true) });
       nextNoBreak = true;
     } else {
       if (!cur.length && nextNoBreak === undefined) nextNoBreak = false;

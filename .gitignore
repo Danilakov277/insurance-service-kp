@@ -10,3 +10,4 @@ config.local.properties
 __pycache__/
 docs/raw.docx
 docs/.pages
+_rot/

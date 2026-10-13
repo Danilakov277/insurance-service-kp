@@ -88,7 +88,7 @@ def page_texts(pdf):
 H = heads()
 nfig = sum(1 for b in content["body"] if b["t"] == "fig")
 ntab = sum(1 for b in content["body"] if b["t"] == "tbl" and not b.get("cont"))
-nref = sum(1 for b in content["body"] if b["t"] == "where" and b["text"].startswith("["))
+nref = sum(1 for b in content["body"] if b["t"] == "src")
 napp = sum(1 for b in content["body"] if b["t"] == "appendix")
 
 # pass 1: dummy numbers of the same width

@@ -4,7 +4,7 @@ const fs = require("fs");
 const {
   Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, AlignmentType,
   PageNumber, Footer, TabStopType, BorderStyle, VerticalAlign, LineRuleType, PageBreak, SectionType,
-  TableLayoutType, PageOrientation, TextDirection, HeightRule,
+  TableLayoutType, PageOrientation, TextDirection, HeightRule, VerticalMergeType,
 } = require("docx");
 
 const [, , contentPath, outPath] = process.argv;
@@ -17,36 +17,60 @@ const CM = (x) => Math.round(x * 567); // twips
 const LINE = { line: 360, lineRule: LineRuleType.EXACT }; // ровно 18 пт
 const IND = CM(1.25);
 
-function runs(text, extra = {}) {
-  // разметка: **жирный**, __курсив__
-  const out = [];
-  const re = /(\*\*[^*]+\*\*|__[^_]+__)/g;
-  let last = 0, m;
-  while ((m = re.exec(text))) {
-    if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), font: FONT, size: PT(14), ...extra }));
-    const t = m[0];
-    if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), font: FONT, size: PT(14), bold: true, ...extra }));
-    else out.push(new TextRun({ text: t.slice(2, -2), font: FONT, size: PT(14), italics: true, ...extra }));
-    last = m.index + t.length;
+// Разметка текста: **жирный**, __курсив__, _{нижний индекс}, ^{верхний индекс}; допускается вложение.
+function parseMarkup(text, style, out, size) {
+  let i = 0, buf = "";
+  const flush = () => {
+    if (!buf) return;
+    out.push(new TextRun({ text: buf, font: style.font || FONT, size: PT(size), bold: style.bold,
+      italics: style.italics, subScript: style.sub, superScript: style.sup }));
+    buf = "";
+  };
+  while (i < text.length) {
+    const two = text.substr(i, 2);
+    if (two === "**" || two === "__") {
+      const j = text.indexOf(two, i + 2);
+      if (j > i + 1) {
+        flush();
+        parseMarkup(text.slice(i + 2, j), { ...style, [two === "**" ? "bold" : "italics"]: true }, out, size);
+        i = j + 2; continue;
+      }
+    }
+    if (two === "_{" || two === "^{") {
+      let depth = 1, j = i + 2;
+      while (j < text.length && depth) { if (text[j] === "{") depth++; else if (text[j] === "}") depth--; j++; }
+      flush();
+      parseMarkup(text.slice(i + 2, j - 1), { ...style, sub: two === "_{", sup: two === "^{" }, out, size);
+      i = j; continue;
+    }
+    buf += text[i]; i++;
   }
-  if (last < text.length) out.push(new TextRun({ text: text.slice(last), font: FONT, size: PT(14), ...extra }));
+  flush();
+}
+function runs(text, extra = {}, size = 14) {
+  const out = [];
+  parseMarkup(String(text), extra, out, size);
   return out;
 }
 
+const BL = 360;        // пробельная строка (одна строка 18 пт)
 const P = (text, o = {}) => new Paragraph({
   children: runs(text, o.run || {}),
   alignment: o.align ?? AlignmentType.JUSTIFIED,
   indent: o.indent ?? { firstLine: IND },
-  spacing: { ...LINE, before: o.before || 0, after: o.after || 0 },
+  spacing: { ...LINE, before: o.before || 0, after: 0 },
   keepNext: o.keepNext, keepLines: o.keepLines, pageBreakBefore: o.pageBreakBefore,
   tabStops: o.tabStops,
 });
 const empty = () => new Paragraph({ children: [], spacing: { ...LINE } });
 
-function heading(level, num, text, centered, noBreak) {
+// Заголовки (СТП 01-2024, п. 2.1.1, 2.2.5, прил. Л): разделы и подразделы – с абзацного отступа,
+// полужирные, вторая строка – по началу текста первой; ненумерованные – по центру.
+// Пробельная строка после заголовка задаётся отступом «перед» следующего элемента.
+function heading(level, num, text, centered, noBreak, before) {
   const opts = {
     heading: level === 1 ? "Heading1" : "Heading2",
-    spacing: { ...LINE, before: level === 2 ? 360 : 0, after: 360 },
+    spacing: { ...LINE, before: before || 0, after: 0 },
     keepNext: true, keepLines: true,
     pageBreakBefore: level === 1 && !noBreak,
   };
@@ -67,7 +91,7 @@ function pngSize(buf) {
   return [buf.readUInt32BE(16), buf.readUInt32BE(20)];
 }
 
-function image(block, maxW, maxH) {
+function image(block, maxW, maxH, before) {
   const buf = fs.readFileSync(block.img);
   const [w, h] = pngSize(buf);
   let widthCm = Math.min(block.w || maxW, maxW);
@@ -76,7 +100,7 @@ function image(block, maxW, maxH) {
   // СТП 01-2024, п. 2.5.3 и прил. Н: рисунок отделяется от текста и от подписи пробельной строкой
   return new Paragraph({
     alignment: AlignmentType.CENTER, keepNext: true,
-    spacing: { before: 360, after: 360, line: 240, lineRule: LineRuleType.AUTO },
+    spacing: { before: before || 0, after: 0, line: 240, lineRule: LineRuleType.AUTO },
     children: [new ImageRun({ data: buf, type: "png", transformation: { width: pxW, height: pxH } })],
   });
 }
@@ -110,7 +134,7 @@ function rotatedFigure(b) {
             verticalAlign: VerticalAlign.CENTER, textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
             margins: { left: 0, right: 0, top: 0, bottom: 0 },
             children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { ...LINE },
-              children: [new TextRun({ text: b.caption, font: FONT, size: PT(14) })] })] }),
+              children: runs(b.caption) })] }),
         ] })],
     }),
     // разделитель: две таблицы подряд Word склеил бы в одну
@@ -119,13 +143,15 @@ function rotatedFigure(b) {
   ];
 }
 
-function cellPara(text, bold, align) {
+function cellPara(text, align) {
   return new Paragraph({
     alignment: align || AlignmentType.LEFT, spacing: { line: 240, lineRule: LineRuleType.AUTO },
-    children: [new TextRun({ text, font: FONT, size: PT(12), bold })],
+    children: runs(text, {}, 12),
   });
 }
 
+// Таблица (СТП 01-2024, п. 2.6): головка – обычным шрифтом по центру; ячейка «^» объединяется
+// с ячейкой выше (пустые графы не допускаются).
 function table(block) {
   const total = CM(16.5);
   const sum = block.cols.reduce((a, b) => a + b, 0);
@@ -134,19 +160,26 @@ function table(block) {
   const border = { style: BorderStyle.SINGLE, size: 6, color: "000000" };
   const borders = { top: border, bottom: border, left: border, right: border };
   const aligns = block.align || [];
-  const mk = (cells, isHeader) => new TableRow({
+  const rows = block.rows;
+  const mk = (cells, r, isHeader) => new TableRow({
     tableHeader: isHeader, cantSplit: true,
-    children: cells.map((t, i) => new TableCell({
-      width: { size: widths[i], type: WidthType.DXA }, borders, verticalAlign: VerticalAlign.TOP,
-      margins: { left: 80, right: 80, top: 20, bottom: 20 },
-      children: String(t).split("\n").map((line) => cellPara(line, isHeader,
-        isHeader ? AlignmentType.CENTER : (aligns[i] === "c" ? AlignmentType.CENTER
-          : aligns[i] === "r" ? AlignmentType.RIGHT : undefined))),
-    })),
+    children: cells.map((t, i) => {
+      const cont = !isHeader && t === "^";
+      const restart = !isHeader && !cont && r + 1 < rows.length && rows[r + 1][i] === "^";
+      const align = isHeader ? AlignmentType.CENTER
+        : (aligns[i] === "c" ? AlignmentType.CENTER : aligns[i] === "r" ? AlignmentType.RIGHT : undefined);
+      return new TableCell({
+        width: { size: widths[i], type: WidthType.DXA }, borders,
+        verticalAlign: isHeader ? VerticalAlign.CENTER : VerticalAlign.TOP,
+        margins: { left: 80, right: 80, top: 20, bottom: 20 },
+        verticalMerge: cont ? VerticalMergeType.CONTINUE : (restart ? VerticalMergeType.RESTART : undefined),
+        children: cont ? [cellPara("", align)] : String(t).split("\n").map((line) => cellPara(line, align)),
+      });
+    }),
   });
   return new Table({
     width: { size: total, type: WidthType.DXA }, columnWidths: widths, layout: TableLayoutType.FIXED,
-    rows: [mk(block.header, true), ...block.rows.map((r) => mk(r, false))],
+    rows: [mk(block.header, -1, true), ...rows.map((row, r) => mk(row, r, false))],
   });
 }
 
@@ -216,7 +249,7 @@ function wrapCode(line) {
   return out;
 }
 
-function listing(block) {
+function listing(block, before) {
   const lines = [];
   for (const f of block.files) {
     if (lines.length) lines.push({ text: "", kind: "code" });
@@ -232,11 +265,12 @@ function listing(block) {
   const out = [];
   pages.forEach((page, k) => {
     if (k > 0) {
-      out.push(new Paragraph({ alignment: AlignmentType.RIGHT, pageBreakBefore: true, spacing: { ...LINE, after: 120 },
-        children: [new TextRun({ text: `Продолжение приложения ${block.letter}`, font: FONT, size: PT(14), italics: true })] }));
+      out.push(new Paragraph({ alignment: AlignmentType.CENTER, pageBreakBefore: true, spacing: { ...LINE, after: 0 },
+        children: [new TextRun({ text: `Продолжение приложения ${block.letter}`, font: FONT, size: PT(14) })] }));
     }
-    for (const l of page) {
-      out.push(new Paragraph({ spacing: { line: 240, lineRule: LineRuleType.EXACT }, keepLines: true,
+    for (const [li, l] of page.entries()) {
+      out.push(new Paragraph({ spacing: { line: 240, lineRule: LineRuleType.EXACT,
+        before: (k === 0 && li === 0) ? (before || 0) : (k > 0 && li === 0 ? 240 : 0) }, keepLines: true,
         children: [new TextRun({ text: l.text || " ", font: MONO, size: PT(10), bold: l.kind === "title" })] }));
     }
   });
@@ -249,62 +283,83 @@ function appendixHeading(b, isFirst) {
       keepNext: true, spacing: { ...LINE },
       children: [new TextRun({ text: `ПРИЛОЖЕНИЕ ${b.letter}`, font: FONT, size: PT(14), bold: true })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, spacing: { ...LINE },
-      children: [new TextRun({ text: `(${b.kind || "обязательное"})`, font: FONT, size: PT(14) })] }),
+      children: [new TextRun({ text: `(${b.kind || "обязательное"})`, font: FONT, size: PT(14), bold: true })] }),
     ...b.title.split("\n").map((t, i, arr) => new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true,
-      spacing: { ...LINE, after: i === arr.length - 1 ? 360 : 0 },
+      spacing: { ...LINE, after: 0 },
       children: [new TextRun({ text: t, font: FONT, size: PT(14), bold: true })] })),
   ];
 }
 
 // ---------------- тело ----------------
+// Пробельная строка между элементами (СТП 01-2024, прил. Л, Н, М, п. 2.6.3): после заголовков,
+// до и после рисунков, таблиц и формул, перед подразделом и пунктом. Задаётся только отступом
+// «перед» следующего элемента, чтобы промежутки не складывались.
+function gapBefore(prev, cur) {
+  if (!prev) return false;
+  if (cur.t === "h1" || cur.t === "appendix" || cur.t === "toc") return prev && ["h1"].includes(prev.t);
+  if (cur.t === "tbl" && (cur.cont || cur.newPage)) return false;
+  if (["h1", "h2", "appendix", "fig", "tbl", "formula"].includes(prev.t)) return true;
+  return ["h2", "pt", "fig", "tbl", "formula"].includes(cur.t);
+}
+
+const WHERE_IND = CM(1.0);
+const SPACER = () => new Paragraph({ spacing: { before: 0, after: 0, line: 20, lineRule: LineRuleType.EXACT },
+  children: [new TextRun({ text: "", size: 2 })] });
+
 function body(blocks, geom, noFirstBreak) {
   const out = [];
   let first = !!noFirstBreak;
   for (let bi = 0; bi < blocks.length; bi++) {
-    const b = blocks[bi], next = blocks[bi + 1];
+    const b = blocks[bi], next = blocks[bi + 1], prev = blocks[bi - 1];
     const isFirst = first; first = false;
+    const before = gapBefore(prev, b) ? BL : 0;
     switch (b.t) {
-      case "h1": out.push(heading(1, b.num, b.text, !b.num, isFirst)); break;
-      case "h2": out.push(heading(2, b.num, b.text)); break;
-      case "p": out.push(P(b.text, { keepNext: b.keepNext })); break;
-      case "pc": out.push(P(b.text, { align: AlignmentType.CENTER, indent: { firstLine: 0 } })); break;
-      case "pl": out.push(P(b.text, { align: AlignmentType.LEFT, indent: { firstLine: 0 } })); break;
-      case "li": out.push(P(`– ${b.text}`)); break;
-      case "ol": out.push(P(`${b.n}) ${b.text}`)); break;
+      case "h1": out.push(heading(1, b.num, b.text, !b.num, isFirst, 0)); break;
+      case "h2": out.push(heading(2, b.num, b.text, false, false, before)); break;
+      case "p": out.push(P(b.text, { before, keepNext: b.keepNext })); break;
+      case "pc": out.push(P(b.text, { before, align: AlignmentType.CENTER, indent: { firstLine: 0 } })); break;
+      case "pl": out.push(P(b.text, { before, align: AlignmentType.LEFT, indent: { firstLine: 0 } })); break;
+      case "li": out.push(P(`– ${b.text}`, { before })); break;
+      case "ol": out.push(P(`${b.n} ${b.text}`, { before })); break;           // сложное перечисление (п. 2.3.7)
+      case "ola": out.push(P(`${b.letter}) ${b.text}`, { before })); break;    // перечисление со ссылками (п. 2.3.8)
+      case "pt": out.push(P(`**${b.num}** ${b.text}`, { before })); break;     // пункт (прил. Л)
+      case "src": out.push(P(b.text, { before })); break;                      // библиографическая запись (п. 2.8.6)
       case "fig":
-        if (b.imgRot) { out.push(...rotatedFigure(b)); break; }
-        out.push(image(b, geom.maxW, geom.maxH));
-        out.push(P(b.caption, { align: AlignmentType.CENTER, indent: { firstLine: 0 }, after: 360, keepLines: true }));
-        break;
-      case "tbl":
-        out.push(P(b.caption, { align: AlignmentType.LEFT, indent: { firstLine: 0 }, before: b.cont ? 0 : 240,
-          keepNext: true, pageBreakBefore: !!b.cont || !!b.newPage }));
-        out.push(table(b));
-        // пустой абзац после таблицы; перед продолжением таблицы не нужен (иначе он уходит
-        // на следующую страницу и даёт пустой лист перед «Продолжение таблицы»)
-        // То же перед заголовком раздела (он и так начинается с новой страницы) и перед
-        // следующей таблицей (её отделяет собственное название).
-        if (!(next && ["tbl", "h1", "appendix"].includes(next.t))) {
-          out.push(new Paragraph({ children: [], spacing: { line: 240, after: 120 } }));
+        if (b.imgRot) {
+          out.push(...rotatedFigure(b));
+        } else {
+          out.push(image(b, geom.maxW, geom.maxH, before));
+          out.push(P(b.caption, { align: AlignmentType.CENTER, indent: { firstLine: 0 }, before: BL, keepLines: true }));
         }
         break;
+      case "tbl":
+        out.push(P(b.caption, { align: AlignmentType.LEFT, before,
+          indent: b.hang && !b.cont ? { left: b.hang, hanging: b.hang } : { firstLine: 0 },
+          keepNext: true, keepLines: true, pageBreakBefore: !!b.cont || !!b.newPage }));
+        out.push(table(b));
+        // две таблицы подряд (таблица и повёрнутый рисунок) Word объединил бы в одну
+        if (next && next.t === "fig" && next.imgRot) out.push(SPACER());
+        break;
       case "formula":
-        out.push(new Paragraph({ alignment: AlignmentType.LEFT, spacing: { ...LINE, before: 120, after: 120 },
-          keepNext: !!b.keepNext,
+        out.push(new Paragraph({ alignment: AlignmentType.LEFT, spacing: { ...LINE, before, after: 0 },
+          keepNext: !!b.keepNext, keepLines: true,
           tabStops: [{ type: TabStopType.CENTER, position: CM(8.25) }, { type: TabStopType.RIGHT, position: CM(16.5) }],
-          children: [new TextRun({ text: `\t${b.text}\t${b.num || ""}`, font: FONT, size: PT(14), italics: false })] }));
+          children: [new TextRun({ text: "\t", font: FONT, size: PT(14) }), ...runs(b.text),
+            new TextRun({ text: `\t${b.num || ""}`, font: FONT, size: PT(14) })] }));
         break;
-      case "where": out.push(P(b.text, { indent: { firstLine: 0 } })); break;
-      case "code":
-        for (const line of b.text.split("\n")) for (const w of wrapCode(line)) out.push(new Paragraph({
-          spacing: { line: 240, lineRule: LineRuleType.EXACT }, keepLines: true,
-          children: [new TextRun({ text: w || " ", font: MONO, size: PT(10) })] }));
-        out.push(new Paragraph({ children: [], spacing: { line: 240, after: 120 } }));
+      case "where": {
+        // «где» – без абзацного отступа, символы выровнены в столбец (п. 2.4.7, прил. Л)
+        const firstLine = b.text.startsWith("где ");
+        out.push(P(firstLine ? "где\t" + b.text.slice(4) : b.text, { before,
+          indent: firstLine ? { left: WHERE_IND, hanging: WHERE_IND } : { left: WHERE_IND },
+          tabStops: [{ type: TabStopType.LEFT, position: WHERE_IND }] }));
         break;
-      case "toc": out.push(new Paragraph({ children: [new TextRun({ text: "%%TOC%%", font: FONT, size: PT(14) })] })); break;
+      }
+      case "toc": out.push(new Paragraph({ spacing: { ...LINE, before },
+        children: [new TextRun({ text: "%%TOC%%", font: FONT, size: PT(14) })] })); break;
       case "pb": out.push(new Paragraph({ children: [new PageBreak()] })); break;
       case "appendix": out.push(...appendixHeading(b, isFirst)); break;
-      case "listing": out.push(...listing(b)); break;
+      case "listing": out.push(...listing(b, before)); break;
       default: throw new Error("unknown block " + b.t);
     }
   }

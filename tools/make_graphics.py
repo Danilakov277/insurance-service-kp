@@ -114,6 +114,7 @@ class Svg:
                       f'stroke="{"#000" if sw else "none"}" stroke-width="{sw}"/>')
 
     def text(self, x, y, t, size=3.5, anchor="start", rotate=None, underline=False, baseline=None):
+        t = t.replace("«", '"').replace("»", '"')      # в шрифте GOST Common нет знаков «»
         tr = f' transform="rotate({rotate} {x:.2f} {y:.2f})"' if rotate else ""
         deco = ' text-decoration="underline"' if underline else ""
         bl = f' dominant-baseline="{baseline}"' if baseline else ""
@@ -344,8 +345,8 @@ def stamp_form2(g, x0, y0, info):
     ln = lambda x1, y1, x2, y2, w=THICK: g.line(x0 + x1, y0 + y1, x0 + x2, y0 + y2, w)
     tx = lambda x, y, t, s=2.8, a="start": g.text(x0 + x, y0 + y, t, s, a, baseline="central")
     g.rect(x0, y0, 185, 40, THICK, "#fff")
-    for c in [8, 17, 40, 55, 65]:
-        ln(c, 0, c, 15 if c == 8 else 40)
+    for c in [7, 17, 40, 55, 65]:          # графы 7, 10, 23, 15, 10 мм (ГОСТ 2.104, форма 2)
+        ln(c, 0, c, 15 if c == 7 else 40)
     for r in range(1, 8):
         ln(0, r * 5, 65, r * 5, THICK if r in (2, 3) else THIN)
     ln(65, 15, 185, 15)
@@ -357,8 +358,8 @@ def stamp_form2(g, x0, y0, info):
     ln(140, 20, 140, 25, THIN)
     ln(145, 20, 145, 25, THIN)
     tx(125, 7.5, info["code"], 7.0, "middle")
-    for t, x in zip(["Изм.", "Лист", "№ докум.", "Подп.", "Дата"], [4, 12.5, 28.5, 47.5, 60]):
-        tx(x, 12.5, t, 2.8, "middle")
+    for t, x in zip(["Изм.", "Лист", "№ докум.", "Подп.", "Дата"], [3.5, 12, 28.5, 47.5, 60]):
+        tx(x, 12.5, t, 2.6, "middle")
     for i, t in enumerate(["Разраб.", "Пров.", "Т.контр.", "Н.контр.", "Утв."]):
         tx(1, 17.5 + i * 5, t, 2.8)
         val = {"Разраб.": NAMES["Author"], "Пров.": NAMES["CheckedBy"]}.get(t)
@@ -408,6 +409,8 @@ def vedomost(n_pages):
         ("", "#Текстовые документы", ""),
         ("", "", ""),
         (CODE_PZ, "Пояснительная записка", f"{n_pages} с."),
+        ("", "Отчет о проверке на заимство-", "Приложение А"),
+        ("", "вания в системе «Антиплагиат»", "к ПЗ"),
         ("", "", ""),
         ("", "#Графические документы", ""),
         ("", "", ""),
@@ -439,6 +442,8 @@ def vedomost(n_pages):
             g.text(187.5, yc, extra, 3.4, "middle", baseline="central")
     stamp_form2(g, 20, stamp_y, {"code": CODE_VED, "title": TOPIC, "doc": "Ведомость документов",
                                  "sheet": n_pages, "sheets": n_pages})
+    g.text(105, 295.3, "Копировал", 2.8, "middle", baseline="central")
+    g.text(180, 295.3, "Формат А4", 2.8, "middle", baseline="central")
     return [(str(g), None)]
 
 

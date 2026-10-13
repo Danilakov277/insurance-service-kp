@@ -9,6 +9,7 @@
 usage: python3 autosplit.py content.json raw.docx
 """
 import copy
+import re
 import json
 import os
 import subprocess
@@ -153,7 +154,7 @@ def main():
             assert len(body_tables) == len(blocks), (len(tables), len(blocks))
             split = None
             for (idx, b), t in zip(blocks, body_tables):
-                head = str(b["header"][0]).split("\n")[0]
+                head = re.sub(r"_\{|\^\{|\}|__|\*\*", "", str(b["header"][0]).split("\n")[0])
                 if not t["head"].startswith(head[:10]):
                     raise RuntimeError(f"таблица {b['num']}: ожидался заголовок «{head}», в документе «{t['head']}»")
                 data_pages = t["pages"][1:]
@@ -177,6 +178,10 @@ def main():
                 continue
             rest = copy.deepcopy(b)
             b["rows"], rest["rows"] = b["rows"][:k], b["rows"][k:]
+            # объединённая ячейка, разорванная переносом, в продолжении таблицы повторяет значение
+            for ci, v in enumerate(rest["rows"][0]):
+                if v == "^":
+                    rest["rows"][0][ci] = next(r[ci] for r in reversed(b["rows"]) if r[ci] != "^")
             rest["cont"] = True
             rest["caption"] = f"Продолжение таблицы {b['num']}"
             content["body"].insert(idx + 1, rest)

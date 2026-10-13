@@ -10,7 +10,7 @@ S = str(KP / "screenshots") + "/"
 
 body = []
 front = []
-_sec = {"n": "0", "fig": 0, "tbl": 0, "frm": 0}
+_sec = {"n": "0", "fig": 0, "tbl": 0, "frm": 0, "h2": None, "pt": 0}
 refs = {"fig": {}, "tbl": {}}
 
 
@@ -19,7 +19,7 @@ def B(x):
 
 
 def h1(num, text):
-    _sec.update(n=num, fig=0, tbl=0, frm=0)
+    _sec.update(n=num, fig=0, tbl=0, frm=0, h2=None, pt=0)
     B({"t": "h1", "num": num, "text": text})
 
 
@@ -30,7 +30,30 @@ def h1c(text, sec=None):
 
 
 def h2(num, text):
+    _sec.update(h2=num, pt=0)
     B({"t": "h2", "num": num, "text": text})
+
+
+def pt(text):
+    """Пункт подраздела (раздела, если подразделов нет) с порядковым номером (СТП 01-2024, п. 2.2.3–2.2.4)."""
+    _sec["pt"] += 1
+    base = _sec["h2"] or _sec["n"]
+    num = f'{base}.{_sec["pt"]}'
+    B({"t": "pt", "num": num, "text": text})
+    return num
+
+
+def src(text):
+    """Запись списка использованных источников (ГОСТ 7.1-2003, СТП 01-2024, п. 2.8.6)."""
+    B({"t": "src", "text": text})
+
+
+def ola(*items):
+    """Перечисление с буквами (п. 2.3.8) – когда на элементы есть ссылки."""
+    letters = "абвгдежиклмнпрстуфхцшщэюя"
+    for i, t in enumerate(items):
+        t = t.rstrip(";.")
+        B({"t": "ola", "letter": letters[i], "text": t + ("." if i == len(items) - 1 else ";")})
 
 
 def p(text):
@@ -109,7 +132,7 @@ def formula(text, keep_next=True):
 
 
 def where(text):
-    B({"t": "where", "text": text})
+    B({"t": "where", "text": text.strip()})
 
 
 def code(text):
@@ -154,7 +177,7 @@ def _resolve(obj):
 
 
 CITE_RE = re.compile(r"\[(\d+(?:, \d+)*)\]")
-TEXT_BLOCKS = ("p", "pl", "pc", "li", "ol", "where")
+TEXT_BLOCKS = ("p", "pl", "pc", "li", "ol", "ola", "pt", "where")
 
 
 def _renumber_sources():
@@ -163,7 +186,7 @@ def _renumber_sources():
     bi = next(i for i, b in enumerate(body) if b["t"] == "h1" and b.get("text") == "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ")
     j = bi + 1
     entries = {}
-    while j < len(body) and body[j]["t"] == "where" and re.match(r"\[\d+\] ", body[j]["text"]):
+    while j < len(body) and body[j]["t"] == "src":
         m = re.match(r"\[(\d+)\] (.*)", body[j]["text"], re.S)
         entries[int(m.group(1))] = m.group(2)
         j += 1
@@ -189,10 +212,79 @@ def _renumber_sources():
         body[bi + 1 + k]["text"] = f"[{k + 1}] {entries[old]}"
 
 
+NBSP = "\u00a0"
+COEF_RE = re.compile(r"(?<!\w)К(бм|в|с|ф|т)(?!\w)")
+LATIN1_RE = re.compile(r"(?<![\w\-+/\\@#{}^])(?<!\w\.)([A-Za-z])(?![\w\-/{}]|\.\w)")
+REF_RE = re.compile(r"\b(рисун\w*|таблиц\w*|формул\w*|выражени\w*|приложени\w*|подраздел\w*|раздел\w*|"
+                    r"пункт\w*|ГОСТ|СТП|глав\w*) (?=\d|[А-ЯA-Z]\b)", re.I)
+CAMEL_RE = re.compile(r"\b[A-Za-z][a-z0-9]+(?:[A-Z][a-z0-9]*){1,}\b")
+UNIT_RE = re.compile(r"(?<=\d) (?=(?:BYN|%|мс|с\b|ч\b|дн|дней|дня|лет|года|год|месяц|ГБ|ГГц|байт|строк|клиент|запрос|поток|соединен))")
+
+
+def typo(t, symbols=True):
+    """Типографика СТП: индексы коэффициентов, курсив латинских символов (п. 2.4.2), неразрывные
+    пробелы в числах, перед единицами, ссылками на источники (п. 2.8.2) и в инициалах."""
+    if symbols:
+        t = COEF_RE.sub(r"К_{\1}", t)
+        t = LATIN1_RE.sub(r"__\1__", t)
+    t = re.sub(r" \[(\d)", NBSP + r"[\1", t)
+    t = REF_RE.sub(lambda m: m.group(1) + NBSP, t)
+    t = re.sub(r"(?<=\d)–(?=\d)", "–\u2060", t)     # диапазон и номер стандарта не разрываются
+    t = re.sub(r"(?<=\d) (?=\d{3}(?!\d))", NBSP, t)
+    t = UNIT_RE.sub(NBSP, t)
+    t = re.sub(r"([А-ЯЁ][а-яё]+) ([А-ЯЁ])\.\s?([А-ЯЁ])\.", r"\1" + NBSP + r"\2." + NBSP + r"\3.", t)
+    t = re.sub(r"(?<![\w.])([А-ЯЁ])\.([А-ЯЁ])\. ([А-ЯЁ][а-яё]+)", r"\1." + NBSP + r"\2." + NBSP + r"\3", t)
+    return t
+
+
+def _typography(blocks):
+    for b in blocks:
+        tt = b["t"]
+        if tt in ("p", "pl", "pc", "li", "ol", "ola", "pt", "where", "formula"):
+            b["text"] = typo(b["text"])
+        elif tt == "src":
+            b["text"] = typo(b["text"], symbols=False).replace(" : ", NBSP + ": ").replace(" / ", NBSP + "/ ")
+        elif tt == "fig":
+            b["caption"] = typo(b["caption"])
+        elif tt == "tbl":
+            b["caption"] = typo(b["caption"])
+            b["header"] = [typo(x) for x in b["header"]]
+            b["rows"] = [[x if x == "^" else _soft_breaks(typo(x)) for x in r] for r in b["rows"]]
+
+
+def _soft_breaks(t):
+    """Длинные идентификаторы в узких графах таблиц переносятся по границам слов, а не посередине."""
+    return CAMEL_RE.sub(lambda m: re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "\u200b", m.group(0))
+                        if len(m.group(0)) > 14 else m.group(0), t)
+
+
+_FONT = None
+
+
+def _text_width_twips(text, size_pt=14):
+    """Ширина строки шрифтом Times New Roman (метрически совместимый Liberation Serif), твипы."""
+    global _FONT
+    from PIL import ImageFont
+    if _FONT is None:
+        _FONT = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf", 1000)
+    return round(_FONT.getlength(text) / 1000 * size_pt * 20)
+
+
+def _table_caption_hang(blocks):
+    """Вторая строка названия таблицы – по началу текста названия (прил. Л)."""
+    for b in blocks:
+        if b["t"] == "tbl" and not b.get("cont"):
+            prefix = b["caption"].split(" – ")[0] + " – "
+            b["hang"] = _text_width_twips(prefix.replace(NBSP, " "))
+
+
 def save(title, out=KP / "docs" / "content.json"):
     global body, front
     _renumber_sources()
     body[:] = _resolve(body)
     front[:] = _resolve(front)
+    _typography(front)
+    _typography(body)
+    _table_caption_hang(body)
     Path(out).write_text(json.dumps({"title": title, "front": front, "body": body}, ensure_ascii=False, indent=1),
                          encoding="utf8")

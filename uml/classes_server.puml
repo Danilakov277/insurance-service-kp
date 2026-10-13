@@ -1,0 +1,134 @@
+@startuml
+!include _style.iuml
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 12
+skinparam nodesep 18
+skinparam ranksep 40
+hide circle
+hide empty members
+set separator none
+
+left to right direction
+package "server" {
+class ServerApp {
+  +{static} main(args) : void
+}
+class ServerConfig {
+  +{static} getInstance() : ServerConfig
+  +load(args) : void
+  +getPort() : int
+  +getThreads() : int
+}
+}
+package "server.net" {
+class ClientHandler {
+  +run() : void
+}
+class Session {
+  +isAuthenticated() : boolean
+  +personId() : long
+}
+class CommandDispatcher {
+  +dispatch(session, request) : Response
+}
+interface CommandHandler {
+  +{abstract} handle(session, request) : Response
+}
+}
+package "server.service" {
+class AuthService {
+  +login(login, password) : User
+  +registerClient(login, password, data) : User
+}
+class ApplicationService {
+  +quote(clientId, a, startDate) : PremiumQuote
+  +submit(clientId, a) : Application
+  +approve(agentId, applicationId, startDate) : Policy
+  +reject(agentId, applicationId, comment) : Application
+}
+class PolicyService {
+  +payInstallment(user, policyId) : Policy
+  +renew(agentId, policyId) : Policy
+  +previewRefund(policyId, date) : RefundCalculation
+  +terminate(policyId) : Policy
+  +controlList() : ArrayList<ControlItem>
+  +refreshStatuses() : int
+}
+class ClaimService {
+  +report(user, claim) : Claim
+  +preview(claimId, assessedDamage) : PayoutDecision
+  +settle(agentId, claimId, assessedDamage, comment) : Claim
+}
+class AdminService {
+  +saveType(t) : InsuranceType
+  +createAgent(login, password, a) : Agent
+  +setBlocked(admin, userId, blocked) : User
+}
+class ReportService {
+  +sales(from, to) : ArrayList<SalesReportRow>
+  +lossRatio(from, to) : ArrayList<LossRatioRow>
+}
+}
+package "server.db" {
+class ConnectionManager {
+  +{static} getInstance() : ConnectionManager
+  +acquire() : Connection
+  +release(c) : void
+  +withConnection(action) : T
+  +inTransaction(action) : T
+}
+}
+package "server.dao" {
+abstract class AbstractDao {
+  #{abstract} map(rs) : T
+  #update(c, sql, params) : int
+  #insert(c, sql, params) : long
+}
+class UserDao {
+}
+class ClientDao {
+}
+class AgentDao {
+}
+class InsuranceTypeDao {
+}
+class ApplicationDao {
+}
+class PolicyDao {
+}
+class PaymentDao {
+}
+class ClaimDao {
+}
+class ReportDao {
+}
+}
+AbstractDao <|-- AgentDao
+AbstractDao <|-- ApplicationDao
+AbstractDao <|-- ClaimDao
+AbstractDao <|-- ClientDao
+AbstractDao <|-- InsuranceTypeDao
+AbstractDao <|-- PaymentDao
+AbstractDao <|-- PolicyDao
+AbstractDao <|-- UserDao
+ServerApp ..> ServerConfig
+ServerApp ..> ClientHandler : создаёт в пуле потоков
+ClientHandler --> CommandDispatcher
+ClientHandler *-- Session
+CommandDispatcher o-- "*" CommandHandler
+CommandDispatcher ..> AuthService
+CommandDispatcher ..> ApplicationService
+CommandDispatcher ..> PolicyService
+CommandDispatcher ..> ClaimService
+CommandDispatcher ..> AdminService
+CommandDispatcher ..> ReportService
+ApplicationService ..> ConnectionManager
+PolicyService ..> ConnectionManager
+ClaimService ..> ConnectionManager
+ApplicationService ..> ApplicationDao
+PolicyService ..> PolicyDao
+ClaimService ..> ClaimDao
+ReportService ..> ReportDao
+AuthService ..> UserDao
+AdminService ..> InsuranceTypeDao
+@enduml

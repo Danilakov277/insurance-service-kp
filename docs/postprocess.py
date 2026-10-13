@@ -8,18 +8,23 @@ content = json.loads((HERE / "content.json").read_text(encoding="utf8"))
 docx_in, docx_out = sys.argv[1], sys.argv[2]
 
 def heads():
+    """Заголовки для содержания: (уровень, номер, текст, ключ поиска в PDF)."""
     out = []
     for b in content["body"]:
         if b["t"] == "h1" and b.get("text") in ("СОДЕРЖАНИЕ",):
             continue
         if b["t"] == "h1":
-            out.append((1, b.get("num"), b["text"]))
+            out.append((1, b.get("num"), b["text"], None))
         elif b["t"] == "h2":
-            out.append((2, b["num"], b["text"]))
+            out.append((2, b["num"], b["text"], None))
+        elif b["t"] == "appendix":
+            label = f"Приложение {b['letter']} ({b.get('kind', 'обязательное')}) " + b["title"].replace("\n", " ")
+            out.append((1, None, label, f"ПРИЛОЖЕНИЕ {b['letter']}"))
+    out.append((1, None, "Ведомость документов", "@last"))
     return out
 
 def sentence(t):
-    if t.isupper():
+    if t == t.upper():
         t = t[0] + t[1:].lower()
     return t
 
@@ -82,18 +87,21 @@ def page_texts(pdf):
 
 H = heads()
 nfig = sum(1 for b in content["body"] if b["t"] == "fig")
-ntab = sum(1 for b in content["body"] if b["t"] == "tbl")
+ntab = sum(1 for b in content["body"] if b["t"] == "tbl" and not b.get("cont"))
 nref = sum(1 for b in content["body"] if b["t"] == "where" and b["text"].startswith("["))
-napp = sum(1 for b in content["body"] if b["t"] == "h1" and b.get("text", "").startswith("ПРИЛОЖЕНИЕ"))
+napp = sum(1 for b in content["body"] if b["t"] == "appendix")
 
 # pass 1: dummy numbers of the same width
 pass1 = docx_out + ".p1.docx"
-patch(docx_in, pass1, [(l, n, t, "99") for l, n, t in H], {"PAGES": 99, "FIGS": nfig, "TABLES": ntab, "REFS": nref, "APPS": napp})
+patch(docx_in, pass1, [(l, n, t, "99") for l, n, t, _k in H], {"PAGES": 99, "FIGS": nfig, "TABLES": ntab, "REFS": nref, "APPS": napp})
 pages = page_texts(to_pdf(pass1))
 toc_page = next(i for i, t in enumerate(pages) if "СОДЕРЖАНИЕ" in t)
 res = []
-for lvl, num, text in H:
-    key = ((num + " ") if num else "") + text
+for lvl, num, text, skey in H:
+    if skey == "@last":
+        res.append((lvl, num, text, len(pages)))
+        continue
+    key = skey or ((num + " ") if num else "") + text
     key = re.sub(r"\s+", " ", key)[:45]
     found = None
     for i in range(toc_page + 1, len(pages)):
@@ -106,5 +114,6 @@ for lvl, num, text in H:
     res.append((lvl, num, text, found))
 patch(docx_in, docx_out, res, {"PAGES": len(pages), "FIGS": nfig, "TABLES": ntab, "REFS": nref, "APPS": napp})
 os.remove(pass1); os.remove(pass1[:-5] + ".pdf")
-print("pages", len(pages), "figs", nfig, "tables", ntab)
+(HERE / ".pages").write_text(str(len(pages)))
+print("pages", len(pages), "figs", nfig, "tables", ntab, "refs", nref, "apps", napp)
 for r in res: print(r[3], r[1] or "", r[2][:60])

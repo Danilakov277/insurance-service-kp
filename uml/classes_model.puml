@@ -1,0 +1,193 @@
+@startuml
+!include _style.iuml
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 12
+skinparam nodesep 14
+skinparam ranksep 30
+hide circle
+hide empty members
+set separator none
+
+left to right direction
+package "by.bsuir.insurance.common.model" {
+abstract class Entity {
+  #id : long
+  +equals(o : Object) : boolean
+  +hashCode() : int
+}
+abstract class Person {
+  -userId : long
+  -lastName : String
+  -firstName : String
+  -patronymic : String
+  +getFullName() : String
+  +getShortName() : String
+  +toString() : String
+}
+class Client {
+  -birthDate : LocalDate
+  -passportNo : String
+  -phone : String
+  -address : String
+  +getAge(on : LocalDate) : int
+}
+class Agent {
+  -position : String
+  -hireDate : LocalDate
+  -commissionRate : BigDecimal
+  -login : String
+  -blocked : boolean
+}
+class User {
+  -login : String
+  -role : Role
+  -blocked : boolean
+  -createdAt : LocalDateTime
+  -displayName : String
+  -personId : long
+  +getDisplayName() : String
+  +toString() : String
+}
+enum Role {
+  CLIENT
+  AGENT
+  ADMIN
+  -title : String
+  +getTitle() : String
+}
+class InsuranceType {
+  -name : String
+  -category : InsuranceCategory
+  -description : String
+  -baseRate : BigDecimal
+  -minSum : BigDecimal
+  -maxSum : BigDecimal
+  -maxTermMonths : int
+  -active : boolean
+  +toString() : String
+}
+enum InsuranceCategory {
+  PROPERTY
+  CASCO
+  ACCIDENT
+  TRAVEL
+  -title : String
+  +getTitle() : String
+  +toString() : String
+}
+class Application {
+  -clientId : long
+  -clientName : String
+  -typeId : long
+  -typeName : String
+  -agentId : Long
+  -agentName : String
+  -requestedSum : BigDecimal
+  -termMonths : int
+  -franchisePercent : int
+  -installments : int
+  -objectDescription : String
+  -status : ApplicationStatus
+  -decisionComment : String
+  -createdAt : LocalDateTime
+  -decidedAt : LocalDateTime
+  -estimatedPremium : BigDecimal
+}
+enum ApplicationStatus {
+  NEW
+  APPROVED
+  REJECTED
+  -title : String
+  +getTitle() : String
+  +toString() : String
+}
+class Policy {
+  -policyNumber : String
+  -applicationId : Long
+  -clientId : long
+  -clientName : String
+  -agentId : long
+  -agentName : String
+  -typeId : long
+  -typeName : String
+  -insuredSum : BigDecimal
+  -premium : BigDecimal
+  -franchise : BigDecimal
+  -startDate : LocalDate
+  -endDate : LocalDate
+  -status : PolicyStatus
+  -createdAt : LocalDateTime
+  -terminatedAt : LocalDateTime
+  -refundAmount : BigDecimal
+  -paidAmount : BigDecimal
+  -payoutsAmount : BigDecimal
+  +isActiveOn(date : LocalDate) : boolean
+  +toString() : String
+}
+enum PolicyStatus {
+  WAITING_PAYMENT
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  TERMINATED
+  FULFILLED
+  -title : String
+  +getTitle() : String
+  +allowsClaims() : boolean
+  +toString() : String
+}
+class Payment {
+  -policyId : long
+  -installmentNo : int
+  -amount : BigDecimal
+  -dueDate : LocalDate
+  -paidDate : LocalDate
+  +isPaid() : boolean
+  +isOverdue(on : LocalDate) : boolean
+}
+class Claim {
+  -policyId : long
+  -policyNumber : String
+  -clientName : String
+  -typeName : String
+  -incidentDate : LocalDate
+  -reportDate : LocalDate
+  -description : String
+  -damageAmount : BigDecimal
+  -assessedDamage : BigDecimal
+  -status : ClaimStatus
+  -payoutAmount : BigDecimal
+  -agentId : Long
+  -agentName : String
+  -decisionComment : String
+  -decidedAt : LocalDateTime
+}
+enum ClaimStatus {
+  REPORTED
+  APPROVED
+  REJECTED
+  -title : String
+  +getTitle() : String
+  +toString() : String
+}
+}
+Entity <|-- Person
+Person <|-- Client
+Person <|-- Agent
+Entity <|-- User
+Entity <|-- InsuranceType
+Entity <|-- Application
+Entity <|-- Policy
+Entity <|-- Payment
+Entity <|-- Claim
+Policy "1" *-- "1..*" Payment : график взносов
+Policy "1" o-- "0..*" Claim : страховые случаи
+Client "1" -- "0..*" Application
+Application "1" -- "0..1" Policy
+InsuranceType "1" -- "0..*" Policy
+InsuranceType --> InsuranceCategory
+User --> Role
+Policy --> PolicyStatus
+Application --> ApplicationStatus
+Claim --> ClaimStatus
+@enduml

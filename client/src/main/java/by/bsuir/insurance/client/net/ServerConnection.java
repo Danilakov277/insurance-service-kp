@@ -3,6 +3,8 @@ package by.bsuir.insurance.client.net;
 import by.bsuir.insurance.common.protocol.Request;
 import by.bsuir.insurance.common.protocol.Response;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,9 +45,10 @@ public final class ServerConnection {
         socket = new Socket();
         socket.connect(new InetSocketAddress(host, port), 5000);
         socket.setSoTimeout(30000);
-        out = new ObjectOutputStream(socket.getOutputStream());
+        socket.setTcpNoDelay(true);
+        out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         out.flush();
-        in = new ObjectInputStream(socket.getInputStream());
+        in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
     /** Отправить запрос и дождаться ответа. При обрыве соединения выполняется одна повторная попытка. */
@@ -56,8 +59,8 @@ public final class ServerConnection {
                     connect();
                 }
                 out.writeObject(request);
-                out.flush();
                 out.reset();
+                out.flush();
                 return (Response) in.readObject();
             } catch (IOException e) {
                 close();

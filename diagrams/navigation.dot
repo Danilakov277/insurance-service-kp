@@ -1,0 +1,18 @@
+digraph G {
+graph [rankdir=TB, nodesep=0.45, ranksep=0.6, fontname="Liberation Serif", pad=0.2];
+node [shape=box, style="rounded", fontname="Liberation Serif", fontsize=13, penwidth=1.3];
+edge [fontname="Liberation Serif", fontsize=11, penwidth=1.2, arrowsize=0.8];
+login [label="Окно входа\nLoginFrame", style="rounded,bold"];
+reg [label="Регистрация клиента\nRegisterDialog (модальный)"];
+cf [shape=record, style="rounded", label="{Личный кабинет клиента\nClientFrame|Расчёт и заявка|Мои заявки|Мои договоры и взносы|Страховые случаи}"];
+af [shape=record, style="rounded", label="{Рабочее место агента\nAgentFrame|Заявки|Договоры|Страховые случаи|Контроль}"];
+adm [shape=record, style="rounded", label="{Администрирование\nAdminFrame|Виды страхования|Агенты|Пользователи|Продажи агентов|Убыточность}"];
+dlg [label="Стандартные диалоги:\nподтверждение «Да / Нет»,\nсообщение об успехе,\nсообщение об ошибке,\nввод причины отказа,\nсохранение файла отчёта"];
+login -> reg [label="«Регистрация\nклиента»"];
+reg -> cf [label="успешная\nрегистрация"];
+login -> cf [label="роль «Клиент»"];
+login -> af [label="роль «Агент»"];
+login -> adm [label="роль\n«Администратор»"];
+cf -> dlg [style=dashed]; af -> dlg [style=dashed]; adm -> dlg [style=dashed];
+cf -> login [label="«Выйти»", style=dotted, constraint=false];
+}

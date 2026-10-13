@@ -65,5 +65,33 @@ public final class ClientApp {
         UIManager.put("defaultFont", new Font(Font.SANS_SERIF, Font.PLAIN, 13));
         UIManager.put("nimbusBase", new java.awt.Color(0x1F, 0x4E, 0x79));
         UIManager.put("nimbusFocus", new java.awt.Color(0x6A, 0x9B, 0xC8));
+        localizeStandardDialogs();
+    }
+
+    /**
+     * Русские надписи стандартных диалогов: в JDK нет русской локализации Swing,
+     * и без этого кнопки диалогов отображаются по-английски.
+     */
+    private static void localizeStandardDialogs() {
+        String[][] texts = {
+            {"OptionPane.yesButtonText", "Да"}, {"OptionPane.noButtonText", "Нет"},
+            {"OptionPane.okButtonText", "ОК"}, {"OptionPane.cancelButtonText", "Отмена"},
+            {"OptionPane.inputDialogTitle", "Ввод"}, {"OptionPane.messageDialogTitle", "Сообщение"},
+            {"FileChooser.saveDialogTitleText", "Сохранение"}, {"FileChooser.openDialogTitleText", "Открытие"},
+            {"FileChooser.saveButtonText", "Сохранить"}, {"FileChooser.openButtonText", "Открыть"},
+            {"FileChooser.cancelButtonText", "Отмена"}, {"FileChooser.updateButtonText", "Обновить"},
+            {"FileChooser.saveInLabelText", "Папка:"}, {"FileChooser.lookInLabelText", "Папка:"},
+            {"FileChooser.fileNameLabelText", "Имя файла:"}, {"FileChooser.filesOfTypeLabelText", "Тип файлов:"},
+            {"FileChooser.acceptAllFileFilterText", "Все файлы"},
+            {"FileChooser.upFolderToolTipText", "На уровень вверх"}, {"FileChooser.homeFolderToolTipText", "Домашняя папка"},
+            {"FileChooser.newFolderToolTipText", "Создать папку"}, {"FileChooser.listViewButtonToolTipText", "Список"},
+            {"FileChooser.detailsViewButtonToolTipText", "Таблица"},
+            {"FileChooser.fileNameHeaderText", "Имя"}, {"FileChooser.fileSizeHeaderText", "Размер"},
+            {"FileChooser.fileDateHeaderText", "Изменён"}, {"FileChooser.fileTypeHeaderText", "Тип"},
+            {"FileChooser.saveButtonToolTipText", "Сохранить файл"}, {"FileChooser.cancelButtonToolTipText", "Закрыть окно"},
+        };
+        for (String[] t : texts) {
+            UIManager.put(t[0], t[1]);
+        }
     }
 }

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="1396" viewBox="0 0 780 1396"><defs><marker id="fa" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="#000"/></marker></defs><rect width="780" height="1396" fill="#fff"/><polyline points="230.0,137.0 230.0,162.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="360.0,210.0 475.0,210.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="368.0" y="203.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="230.0,258.0 230.0,280.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="273.0" font-size="14" text-anchor="start">да</text>
+<polyline points="360.0,328.0 475.0,328.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="368.0" y="321.0" font-size="14" text-anchor="start">да</text>
+<polyline points="230.0,376.0 230.0,398.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="391.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="360.0,446.0 475.0,446.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="368.0" y="439.0" font-size="14" text-anchor="start">да</text>
+<polyline points="230.0,494.0 230.0,516.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="509.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="360.0,564.0 475.0,564.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="368.0" y="557.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="230.0,612.0 230.0,646.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="627.0" font-size="14" text-anchor="start">да</text>
+<polyline points="230.0,690.0 230.0,714.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="340.0,754.0 475.0,754.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="348.0" y="747.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="230.0,794.0 230.0,828.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="809.0" font-size="14" text-anchor="start">да</text>
+<polyline points="230.0,880.0 230.0,906.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="340.0,946.0 475.0,946.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="348.0" y="939.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="230.0,986.0 230.0,1018.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="1001.0" font-size="14" text-anchor="start">да</text>
+<polyline points="340.0,1058.0 480.0,1058.0 480.0,1103.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="348.0" y="1051.0" font-size="14" text-anchor="start">да</text>
+<polyline points="230.0,1098.0 230.0,1162.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="236.0" y="1113.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="480.0,1153.0 480.0,1146.0 230.0,1146.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#fa)"/>
+<circle cx="230" cy="1146.0" r="3" fill="#000"/>
+<polyline points="230.0,1214.0 230.0,1246.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="685.0,210.0 715.0,210.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="685.0,328.0 715.0,328.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="715" cy="328" r="3" fill="#000"/>
+<polyline points="685.0,446.0 715.0,446.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="715" cy="446" r="3" fill="#000"/>
+<polyline points="685.0,564.0 715.0,564.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="715" cy="564" r="3" fill="#000"/>
+<polyline points="685.0,754.0 715.0,754.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="715" cy="754" r="3" fill="#000"/>
+<polyline points="685.0,946.0 715.0,946.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="715" cy="946" r="3" fill="#000"/>
+<polyline points="715.0,210.0 715.0,1222.0 590.0,1222.0 590.0,1246.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="230.0,1298.0 230.0,1336.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="590.0,1298.0 590.0,1322.0 230.0,1322.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#fa)"/>
+<circle cx="230" cy="1322.0" r="3" fill="#000"/>
+<rect x="155.0" y="10.0" width="150" height="40" rx="20.0" ry="20.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="35.2" font-size="15" text-anchor="middle">Начало</text>
+<polygon points="94.0,67.0 380.0,67.0 366.0,137.0 80.0,137.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="89.2" font-size="15" text-anchor="middle">Ввод: договор, график взносов,</text><text x="230.0" y="107.2" font-size="15" text-anchor="middle">заявление, оценённый ущерб D,</text><text x="230.0" y="125.2" font-size="15" text-anchor="middle">выплаты по договору W</text>
+<polygon points="230,162.0 360.0,210 230,258.0 100.0,210" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="196.9" font-size="14" text-anchor="middle">Дата события</text><text x="230.0" y="214.9" font-size="14" text-anchor="middle">в периоде действия</text><text x="230.0" y="232.9" font-size="14" text-anchor="middle">договора?</text>
+<rect x="475.0" y="184.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="206.2" font-size="15" text-anchor="middle">Причина: событие вне</text><text x="580.0" y="224.2" font-size="15" text-anchor="middle">периода действия</text>
+<polygon points="230,280.0 360.0,328 230,376.0 100.0,328" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="323.9" font-size="14" text-anchor="middle">Договор расторгнут</text><text x="230.0" y="341.9" font-size="14" text-anchor="middle">до даты события?</text>
+<rect x="475.0" y="302.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="324.2" font-size="15" text-anchor="middle">Причина: договор</text><text x="580.0" y="342.2" font-size="15" text-anchor="middle">расторгнут</text>
+<polygon points="230,398.0 360.0,446 230,494.0 100.0,446" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="432.9" font-size="14" text-anchor="middle">Есть просроченные</text><text x="230.0" y="450.9" font-size="14" text-anchor="middle">взносы на дату</text><text x="230.0" y="468.9" font-size="14" text-anchor="middle">события?</text>
+<rect x="475.0" y="420.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="442.2" font-size="15" text-anchor="middle">Причина: просрочены</text><text x="580.0" y="460.2" font-size="15" text-anchor="middle">страховые взносы</text>
+<polygon points="230,516.0 360.0,564 230,612.0 100.0,564" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="550.9" font-size="14" text-anchor="middle">Заявление подано</text><text x="230.0" y="568.9" font-size="14" text-anchor="middle">не позднее</text><text x="230.0" y="586.9" font-size="14" text-anchor="middle">30 дней?</text>
+<rect x="475.0" y="538.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="560.2" font-size="15" text-anchor="middle">Причина: пропущен</text><text x="580.0" y="578.2" font-size="15" text-anchor="middle">срок подачи</text>
+<rect x="115.0" y="646.0" width="230" height="44" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="673.2" font-size="15" text-anchor="middle">Ф = франшиза договора</text>
+<polygon points="230,714.0 340.0,754 230,794.0 120.0,754" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="758.9" font-size="14" text-anchor="middle">D &gt; Ф ?</text>
+<rect x="475.0" y="728.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="750.2" font-size="15" text-anchor="middle">Причина: ущерб не</text><text x="580.0" y="768.2" font-size="15" text-anchor="middle">превышает франшизу</text>
+<rect x="115.0" y="828.0" width="230" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="850.2" font-size="15" text-anchor="middle">B = D − Ф;</text><text x="230.0" y="868.2" font-size="15" text-anchor="middle">R = С − W</text>
+<polygon points="230,906.0 340.0,946 230,986.0 120.0,946" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="950.9" font-size="14" text-anchor="middle">R &gt; 0 ?</text>
+<rect x="475.0" y="920.0" width="210" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="580.0" y="942.2" font-size="15" text-anchor="middle">Причина: страховая</text><text x="580.0" y="960.2" font-size="15" text-anchor="middle">сумма исчерпана</text>
+<polygon points="230,1018.0 340.0,1058 230,1098.0 120.0,1058" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="1062.9" font-size="14" text-anchor="middle">B ≥ R ?</text>
+<rect x="395.0" y="1103.0" width="170" height="50" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="480.0" y="1124.2" font-size="15" text-anchor="middle">B = R; договор</text><text x="480.0" y="1142.2" font-size="15" text-anchor="middle">исполнен</text>
+<rect x="115.0" y="1162.0" width="230" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="1184.2" font-size="15" text-anchor="middle">Округлить B</text><text x="230.0" y="1202.2" font-size="15" text-anchor="middle">до 0,01 BYN</text>
+<polygon points="124.0,1246.0 350.0,1246.0 336.0,1298.0 110.0,1298.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="1268.2" font-size="15" text-anchor="middle">Вывод: решение</text><text x="230.0" y="1286.2" font-size="15" text-anchor="middle">«выплата B»</text>
+<polygon points="489.0,1246.0 705.0,1246.0 691.0,1298.0 475.0,1298.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="590.0" y="1268.2" font-size="15" text-anchor="middle">Вывод: решение</text><text x="590.0" y="1286.2" font-size="15" text-anchor="middle">«отказ», причина</text>
+<rect x="155.0" y="1336.0" width="150" height="40" rx="20.0" ry="20.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="230.0" y="1361.2" font-size="15" text-anchor="middle">Конец</text></svg>

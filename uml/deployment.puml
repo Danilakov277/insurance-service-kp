@@ -1,15 +1,14 @@
 @startuml
 !include _style.iuml
 node "ПК клиента / агента / администратора\n(Windows 7 и выше)" as PC {
-  node "JRE 8 и выше\n(рекомендуется 21 LTS)" {
-    artifact "insurance-client.jar" as CJ
+  node "JRE 8 и выше" as J1 {
+    artifact "insurance-client.jar\n(Swing-клиент, модуль common)" as CJ
   }
   file "client.properties" as CP
 }
-node "Сервер приложений" as S {
-  node "JRE 8 и выше\n(рекомендуется 21 LTS) " {
-    artifact "insurance-server.jar" as SJ
-    artifact "postgresql-42.7.4.jar\n(JDBC-драйвер)" as JD
+node "Сервер приложений\n(Windows / Linux)" as S {
+  node "JRE 8 и выше" as J2 {
+    artifact "insurance-server.jar\n(сервер, модуль common,\nJDBC-драйвер PostgreSQL 42.7.4)" as SJ
   }
   file "server.properties" as SP
 }
@@ -17,8 +16,7 @@ node "Сервер БД" as DBS {
   database "PostgreSQL 16\nБД insurance" as DB
 }
 CJ -- SJ : TCP/IP, порт 5555\n(сериализация Java)
-SJ -- JD
-JD -- DB : TCP/IP, порт 5432\n(JDBC)
-CJ ..> CP
-SJ ..> SP
+SJ -- DB : TCP/IP, порт 5432\n(JDBC)
+CJ ..> CP : адрес сервера
+SJ ..> SP : порт, потоки,\nпараметры БД
 @enduml

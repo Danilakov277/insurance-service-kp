@@ -1,0 +1,76 @@
+@startuml
+!include _style.iuml
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 12
+skinparam nodesep 25
+skinparam ranksep 40
+hide circle
+hide empty members
+set separator none
+
+package "server.logic" {
+class PremiumCalculator {
+  +calculate(type, application, client, startDate, claimsIn2Years) : PremiumQuote
+  +calculate(type, sum, termMonths, age) : BigDecimal
+  +validate(type, a) : void
+  +{static} ageFactor(age) : BigDecimal
+  +{static} termFactor(termMonths) : BigDecimal
+  +{static} bonusMalusFactor(claims) : BigDecimal
+  +{static} franchiseFactor(percent) : BigDecimal
+}
+class PremiumStrategyFactory {
+  +{static} forType(type) : PremiumStrategy
+}
+interface PremiumStrategy {
+  +{abstract} typeFactor(application, client, ageAtStart) : BigDecimal
+  +{abstract} factorName() : String
+}
+abstract class AbstractPremiumStrategy {
+  +typeFactor(application, client, ageAtStart) : BigDecimal
+  #extraFactor(application, client, ageAtStart) : BigDecimal
+  #riskKeywords() : String[]
+  #riskSurcharge() : BigDecimal
+}
+class PropertyPremiumStrategy {
+  #extraFactor(application, client, ageAtStart) : BigDecimal
+  #riskKeywords() : String[]
+  #riskSurcharge() : BigDecimal
+  +factorName() : String
+}
+class CascoPremiumStrategy {
+  #extraFactor(application, client, ageAtStart) : BigDecimal
+  +factorName() : String
+}
+class AccidentPremiumStrategy {
+  #riskKeywords() : String[]
+  #riskSurcharge() : BigDecimal
+  +factorName() : String
+}
+class TravelPremiumStrategy {
+  #riskKeywords() : String[]
+  #riskSurcharge() : BigDecimal
+  +factorName() : String
+}
+class InstallmentScheduler {
+  +{static} validate(termMonths, installments) : void
+  +{static} build(policyId, premium, installments, startDate, termMonths) : List<Payment>
+}
+class PayoutCalculator {
+  +calculate(policy, payments, claim, damage, paidBefore) : PayoutDecision
+}
+class RefundCalculator {
+  +calculate(policy, paid, payouts, terminationDate) : RefundCalculation
+}
+class PolicyStatusRules {
+  +{static} evaluate(policy, payments, today) : PolicyStatus
+}
+}
+PremiumStrategy <|.. AbstractPremiumStrategy
+AbstractPremiumStrategy <|-- AccidentPremiumStrategy
+AbstractPremiumStrategy <|-- CascoPremiumStrategy
+AbstractPremiumStrategy <|-- PropertyPremiumStrategy
+AbstractPremiumStrategy <|-- TravelPremiumStrategy
+PremiumCalculator ..> PremiumStrategyFactory
+PremiumStrategyFactory ..> PremiumStrategy : создаёт
+PremiumCalculator ..> InstallmentScheduler
+@enduml

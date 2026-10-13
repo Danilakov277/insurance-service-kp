@@ -1,38 +1,44 @@
 @startuml
 !include _style.iuml
 skinparam sequenceMessageAlign left
+skinparam maxMessageSize 260
 actor "Агент" as A
-participant "Клиентское\nприложение\n(Swing)" as UI
-participant "ClientHandler\n(поток сервера)" as H
-participant "PolicyService" as PS
+participant "ApplicationsPanel\n(клиент, Swing)" as UI
+participant "ClientHandler\n(поток пула)" as H
+participant "CommandDispatcher" as D
+participant "ApplicationService" as S
 participant "PremiumCalculator" as PC
-participant "PolicyDao /\nPaymentDao" as D
+participant "DAO" as DAO
 database "PostgreSQL" as DB
-A -> UI : выбрать заявку и\nнажать «Оформить полис»
-UI -> H : Request(ISSUE_POLICY,\napplicationId, startDate)
+A -> UI : выбрать заявку, указать дату\nначала, «Одобрить и оформить полис»
+UI -> H : Request(APPROVE_APPLICATION,\napplicationId, startDate)
 activate H
-H -> H : проверить сессию и роль
-H -> PS : issuePolicy(applicationId, agent, startDate)
-activate PS
-PS -> D : загрузить заявку, клиента,\nвид страхования
-D -> DB : SELECT ...
-DB --> D : данные
-alt заявка не в статусе «На рассмотрении»
-  PS --> H : BusinessRuleException
-  H --> UI : Response(ERROR, сообщение)
-else
-PS -> PC : calculate(type, sum, term,\nclient, franchise)
+H -> D : dispatch(session, request)
+activate D
+D -> D : проверка авторизации\nи роли AGENT
+D -> S : approve(agentId, applicationId, startDate)
+activate S
+S -> DAO : inTransaction: lockById(applicationId)
+DAO -> DB : SELECT ... FOR UPDATE
+alt заявка уже рассмотрена
+  S --> D : BusinessRuleException
+  D --> H : исключение
+  H --> UI : Response.error(«Заявка уже рассмотрена»)
+else заявка в статусе «На рассмотрении»
+  S -> DAO : клиент, вид страхования,\nчисло выплат за 2 года
+  DAO -> DB : SELECT ...
+  S -> PC : calculate(type, application,\nclient, startDate, claims)
   activate PC
-  PC -> D : число выплат клиента за 2 года
-  D -> DB : SELECT count(*) ...
-  PC --> PS : премия
+  PC --> S : PremiumQuote (премия, франшиза)
   deactivate PC
-  PS -> D : транзакция: INSERT policies,\nINSERT payments (график),\nUPDATE applications
-  D -> DB : BEGIN ... COMMIT
-  PS --> H : Policy
-  deactivate PS
-  H --> UI : Response(OK, Policy)
+  S -> DAO : PolicyDao.insert, PaymentDao.insertAll\n(график взносов), ApplicationDao.decide
+  DAO -> DB : INSERT/UPDATE ... COMMIT
+  S --> D : Policy
+  deactivate S
+  D --> H : Response.ok(«Договор оформлен», policy)
+  deactivate D
+  H --> UI : Response
+  deactivate H
+  UI --> A : номер полиса, премия,\nпериод действия
 end
-deactivate H
-UI --> A : номер полиса, премия,\nграфик взносов
 @enduml

@@ -59,15 +59,16 @@ public final class EndToEndScenario {
 
         Conn() throws Exception {
             s = new Socket(HOST, PORT);
-            out = new ObjectOutputStream(s.getOutputStream());
+            s.setTcpNoDelay(true);
+            out = new ObjectOutputStream(new java.io.BufferedOutputStream(s.getOutputStream()));
             out.flush();
-            in = new ObjectInputStream(s.getInputStream());
+            in = new ObjectInputStream(new java.io.BufferedInputStream(s.getInputStream()));
         }
 
         Response send(Request r) throws Exception {
             out.writeObject(r);
-            out.flush();
             out.reset();
+            out.flush();
             return (Response) in.readObject();
         }
 

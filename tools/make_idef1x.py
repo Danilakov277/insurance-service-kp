@@ -8,11 +8,11 @@ ENT = {
  "users":          (["id"], ["login", "password_hash", "salt", "role_id (FK)", "is_blocked", "created_at"], False),
  "clients":        (["id"], ["user_id (FK)", "last_name", "first_name", "patronymic", "birth_date", "passport_no", "phone", "address"], False),
  "agents":         (["id"], ["user_id (FK)", "last_name", "first_name", "patronymic", "position", "hire_date", "commission_rate"], False),
- "insurance_types":(["id"], ["name", "description", "base_rate", "min_sum", "max_sum", "max_term_months", "is_active"], False),
+ "insurance_types":(["id"], ["name", "category", "description", "base_rate", "min_sum", "max_sum", "max_term_months", "is_active"], False),
  "applications":   (["id"], ["client_id (FK)", "type_id (FK)", "agent_id (FK)", "requested_sum", "term_months", "franchise_percent", "installments", "object_description", "status", "decision_comment", "created_at", "decided_at"], False),
  "policies":       (["id"], ["policy_number", "application_id (FK)", "client_id (FK)", "agent_id (FK)", "type_id (FK)", "insured_sum", "premium", "franchise", "start_date", "end_date", "status", "created_at", "terminated_at", "refund_amount"], False),
  "payments":       (["policy_id (FK)", "installment_no"], ["amount", "due_date", "paid_date"], True),
- "claims":         (["id"], ["policy_id (FK)", "incident_date", "report_date", "description", "damage_amount", "status", "payout_amount", "agent_id (FK)", "decision_comment", "decided_at"], False),
+ "claims":         (["id"], ["policy_id (FK)", "incident_date", "report_date", "description", "damage_amount", "assessed_damage", "status", "payout_amount", "agent_id (FK)", "decision_comment", "decided_at"], False),
 }
 # parent, child, identifying, cardinality label (child side), verb
 REL = [

@@ -6,3 +6,7 @@ build/
 out/
 config.local.properties
 *.docx.p1.docx
+~$*
+__pycache__/
+docs/raw.docx
+docs/.pages

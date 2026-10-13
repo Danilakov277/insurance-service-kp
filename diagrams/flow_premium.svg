@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="1330" viewBox="0 0 780 1330"><defs><marker id="fa" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="#000"/></marker></defs><rect width="780" height="1330" fill="#fff"/><polyline points="240.0,50.0 240.0,65.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,135.0 240.0,164.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,220.0 240.0,238.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,421.0 240.0,447.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,513.0 240.0,542.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,586.0 240.0,600.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,774.0 240.0,804.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,856.0 240.0,884.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,936.0 240.0,966.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,1022.0 240.0,1052.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,1108.0 240.0,1140.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<polyline points="240.0,322.0 240.0,355.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="246.0" y="337.0" font-size="14" text-anchor="start">да</text>
+<polyline points="365.0,280.0 630.0,280.0 630.0,340.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="373.0" y="273.0" font-size="14" text-anchor="start">нет</text>
+<polyline points="365.0,642.0 410.0,642.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="373.0" y="635.0" font-size="14" text-anchor="start">да</text>
+<polyline points="240.0,684.0 240.0,718.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<text x="234.0" y="699.0" font-size="14" text-anchor="end">нет</text>
+<polyline points="485.0,664.0 485.0,704.0 240.0,704.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#fa)"/>
+<circle cx="240" cy="704.0" r="3" fill="#000"/>
+<polyline points="630.0,396.0 630.0,1212.0 240.0,1212.0" fill="none" stroke="#000" stroke-width="1.6" marker-end="url(#fa)"/>
+<polyline points="240.0,1196.0 240.0,1226.0" fill="none" stroke="#000" stroke-width="1.6"/>
+<circle cx="240" cy="1212.0" r="3" fill="#000"/>
+<rect x="165.0" y="10.0" width="150" height="40" rx="20.0" ry="20.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="35.2" font-size="15" text-anchor="middle">Начало</text>
+<polygon points="109.0,65.0 385.0,65.0 371.0,135.0 95.0,135.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="87.2" font-size="15" text-anchor="middle">Ввод: вид страхования, С, m,</text><text x="240.0" y="105.2" font-size="15" text-anchor="middle">франшиза f, число взносов n,</text><text x="240.0" y="123.2" font-size="15" text-anchor="middle">страхователь, дата начала</text>
+<rect x="115.0" y="164.0" width="250" height="56" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<line x1="129.0" y1="164.0" x2="129.0" y2="220.0" stroke="#000" stroke-width="1.6"/>
+<line x1="351.0" y1="164.0" x2="351.0" y2="220.0" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="188.2" font-size="15" text-anchor="middle">Проверить вид, С, m, f, n</text><text x="240.0" y="206.2" font-size="15" text-anchor="middle">(validate)</text>
+<polygon points="240,238.0 365.0,280 240,322.0 115.0,280" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="275.9" font-size="14" text-anchor="middle">Параметры</text><text x="240.0" y="293.9" font-size="14" text-anchor="middle">корректны?</text>
+<polygon points="529.0,340.0 745.0,340.0 731.0,396.0 515.0,396.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="630.0" y="364.2" font-size="15" text-anchor="middle">Вывод сообщения</text><text x="630.0" y="382.2" font-size="15" text-anchor="middle">об ошибке</text>
+<rect x="125.0" y="355.0" width="230" height="66" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="375.2" font-size="15" text-anchor="middle">Т = базовый тариф вида;</text><text x="240.0" y="393.2" font-size="15" text-anchor="middle">возраст = полных лет</text><text x="240.0" y="411.2" font-size="15" text-anchor="middle">на дату начала</text>
+<rect x="125.0" y="447.0" width="230" height="66" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="467.2" font-size="15" text-anchor="middle">Кв = 1,20 (до 25 лет),</text><text x="240.0" y="485.2" font-size="15" text-anchor="middle">1,35 (старше 60 лет),</text><text x="240.0" y="503.2" font-size="15" text-anchor="middle">иначе 1,00</text>
+<rect x="125.0" y="542.0" width="230" height="44" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="569.2" font-size="15" text-anchor="middle">Кс = m / 12</text>
+<polygon points="240,600.0 365.0,642 240,684.0 115.0,642" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="646.9" font-size="14" text-anchor="middle">m &lt; 12 ?</text>
+<rect x="410.0" y="620.0" width="150" height="44" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="485.0" y="647.2" font-size="15" text-anchor="middle">Кс = Кс × 1,1</text>
+<rect x="115.0" y="718.0" width="250" height="56" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<line x1="129.0" y1="718.0" x2="129.0" y2="774.0" stroke="#000" stroke-width="1.6"/>
+<line x1="351.0" y1="718.0" x2="351.0" y2="774.0" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="742.2" font-size="15" text-anchor="middle">k = число выплат клиенту</text><text x="240.0" y="760.2" font-size="15" text-anchor="middle">за 2 года (запрос к БД)</text>
+<rect x="105.0" y="804.0" width="270" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="826.2" font-size="15" text-anchor="middle">Кбм = 0,90 (k = 0), 1,00 (k = 1),</text><text x="240.0" y="844.2" font-size="15" text-anchor="middle">1,25 (k ≥ 2)</text>
+<rect x="105.0" y="884.0" width="270" height="52" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="906.2" font-size="15" text-anchor="middle">Кф = 1,00 / 0,95 / 0,90 / 0,80</text><text x="240.0" y="924.2" font-size="15" text-anchor="middle">при f = 0 / 1 / 2 / 5 %</text>
+<rect x="105.0" y="966.0" width="270" height="56" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<line x1="119.0" y1="966.0" x2="119.0" y2="1022.0" stroke="#000" stroke-width="1.6"/>
+<line x1="361.0" y1="966.0" x2="361.0" y2="1022.0" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="990.2" font-size="15" text-anchor="middle">Кт = стратегия вида страхования</text><text x="240.0" y="1008.2" font-size="15" text-anchor="middle">(PremiumStrategyFactory)</text>
+<rect x="90.0" y="1052.0" width="300" height="56" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="1076.2" font-size="15" text-anchor="middle">П = С × Т × Кв × Кс × Кбм × Кф × Кт;</text><text x="240.0" y="1094.2" font-size="15" text-anchor="middle">округлить П до 0,01 BYN</text>
+<polygon points="114.0,1140.0 380.0,1140.0 366.0,1196.0 100.0,1196.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="1164.2" font-size="15" text-anchor="middle">Вывод: П, франшиза,</text><text x="240.0" y="1182.2" font-size="15" text-anchor="middle">значения коэффициентов</text>
+<rect x="165.0" y="1226.0" width="150" height="40" rx="20.0" ry="20.0" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="240.0" y="1251.2" font-size="15" text-anchor="middle">Конец</text></svg>

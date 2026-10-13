@@ -3,6 +3,7 @@ package by.bsuir.insurance.client.ui.admin;
 import by.bsuir.insurance.client.ui.Ui;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,8 @@ final class ReportExporter {
     static void export(Component owner, String title, String period, String[] header, List<String[]> rows,
                        String suggestedName) {
         JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Сохранение отчёта");
+        fc.setFileFilter(new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt"));
         fc.setSelectedFile(new File(suggestedName));
         if (fc.showSaveDialog(owner) != JFileChooser.APPROVE_OPTION) {
             return;
